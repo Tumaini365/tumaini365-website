@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # 1. Page Configuration & Brand Styling
 st.set_page_config(
@@ -63,29 +63,45 @@ if page == "Home":
     with c3:
         st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
 
-# 5. PAGE VIEW: BOOK AN APPOINTMENT (Updated with Mobile Field)
+# 5. PAGE VIEW: BOOK AN APPOINTMENT (With Integrated Interactive Calendar/Slots)
 elif page == "Book an Appointment":
     st.markdown("## 📆 Secure Booking Engine")
-    st.write("Please fill out your consultation details below to request your intake session.")
+    st.write("Please select your consultation details below to request your intake session.")
     with st.form("native_booking_form", clear_on_submit=True):
         client_name = st.text_input("Full Client Name *")
         client_email = st.text_input("Your Secure Email Address *")
         client_mobile = st.text_input("Mobile Contact Number *", placeholder="e.g., 0722 000 000")
         session_format = st.selectbox("Preferred Session Format *", ["Virtual (Secure Video Link)", "Face-to-Face (In-Person Office)"])
-        booking_time = st.text_input("Preferred Appointment Date & Time *", placeholder="e.g., Next Tuesday at 2:00 PM")
+        
+        # Interactive Date Calendar Picker (Starts from today)
+        selected_date = st.date_input("Select Appointment Date *", min_value=datetime.today())
+        
+        # Interactive Time Slot Selectbox Dropdown
+        selected_time = st.selectbox("Select Preferred Time Slot *", [
+            "08:00 AM - 09:00 AM",
+            "09:30 AM - 10:30 AM",
+            "11:00 AM - 12:00 PM",
+            "02:00 PM - 03:00 PM",
+            "03:30 PM - 04:30 PM",
+            "05:00 PM - 06:00 PM"
+        ])
+        
         consent = st.checkbox("I confirm I am requesting a confidential clinical intake appointment.*")
         submit_button = st.form_submit_button("Submit Secure Request")
         if submit_button:
-            if not client_name or not client_email or not client_mobile or not booking_time or not consent:
+            if not client_name or not client_email or not client_mobile or not consent:
                 st.error("Please fill out all required fields marked with an asterisk (*).")
             else:
+                # Merge date and time elements into a single clean readable string layout
+                formatted_datetime = f"{selected_date.strftime('%A, %B %d, %Y')} @ {selected_time}"
+                
                 new_booking = {
                     "Submission Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "Client Name": client_name,
                     "Client Email": client_email,
                     "Mobile Contact": client_mobile,
                     "Format": session_format,
-                    "Requested Date/Time": booking_time
+                    "Requested Date/Time": formatted_datetime
                 }
                 save_permanent_booking(new_booking)
                 st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email or mobile shortly.")
@@ -115,15 +131,3 @@ elif page == "🔒 Practice Dashboard":
     password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log", type="password")
     
     if password_input == "tumaini365":
-        st.success("Access Granted.")
-        if len(current_bookings) == 0:
-            st.info("No appointment requests have been logged yet.")
-        else:
-            df = pd.DataFrame(current_bookings)
-            st.dataframe(df, use_container_width=True)
-            csv_data = df.to_csv(index=False).encode('utf-8')
-            st.download_button(label="Download Log as CSV (Excel Spreadsheet)", data=csv_data, file_name="tumaini365_bookings.csv", mime="text/csv")
-            st.markdown("---")
-            if st.button("Clear All System Bookings Permanently"):
-                if os.path.exists(DB_FILE):
-                    os.remove(DB_FILE)
