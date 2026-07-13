@@ -63,30 +63,32 @@ if page == "Home":
     with c3:
         st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
 
-# 5. PAGE VIEW: BOOK AN APPOINTMENT
+# 5. PAGE VIEW: BOOK AN APPOINTMENT (Updated with Mobile Field)
 elif page == "Book an Appointment":
     st.markdown("## 📆 Secure Booking Engine")
     st.write("Please fill out your consultation details below to request your intake session.")
     with st.form("native_booking_form", clear_on_submit=True):
         client_name = st.text_input("Full Client Name *")
         client_email = st.text_input("Your Secure Email Address *")
+        client_mobile = st.text_input("Mobile Contact Number *", placeholder="e.g., 0722 000 000")
         session_format = st.selectbox("Preferred Session Format *", ["Virtual (Secure Video Link)", "Face-to-Face (In-Person Office)"])
         booking_time = st.text_input("Preferred Appointment Date & Time *", placeholder="e.g., Next Tuesday at 2:00 PM")
         consent = st.checkbox("I confirm I am requesting a confidential clinical intake appointment.*")
         submit_button = st.form_submit_button("Submit Secure Request")
         if submit_button:
-            if not client_name or not client_email or not booking_time or not consent:
+            if not client_name or not client_email or not client_mobile or not booking_time or not consent:
                 st.error("Please fill out all required fields marked with an asterisk (*).")
             else:
                 new_booking = {
                     "Submission Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "Client Name": client_name,
                     "Client Email": client_email,
+                    "Mobile Contact": client_mobile,
                     "Format": session_format,
                     "Requested Date/Time": booking_time
                 }
                 save_permanent_booking(new_booking)
-                st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email.")
+                st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email or mobile shortly.")
 
 # 6. PAGE VIEW: WELLNESS INSIGHTS (BLOG SECTION)
 elif page == "Wellness Insights":
@@ -94,7 +96,6 @@ elif page == "Wellness Insights":
     st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
     st.markdown("---")
     
-    # Safe Single line HTML variable layout structures
     art_1 = '<div class="blog-article"><h3>1. Navigating Workplace Burnout</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.</p><h4>Key Coping Strategies:</h4><ul><li><b>Establish Hard Boundaries:</b> Create strict disconnect times where corporate emails and work tasks are entirely unreachable.</li><li><b>Practice Micro-Breaks:</b> Use the 50-10 rule—work dynamically for 50 minutes, then completely step away for 10 minutes to reset your nervous system.</li><li><b>Speak to a Specialist:</b> Burnout changes cognitive processing; early professional therapy provides structural behavioral recovery frameworks.</li></ul></div>'
     art_2 = '<div class="blog-article"><h3>2. Grounding Techniques for Managing Acute Anxiety</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Anxiety pulls our attention into terrifying projections of the future. When acute anxiety or a panic episode strikes, physical grounding exercises work rapidly to signal safety directly to your brain emotional center.</p><h4>The 5-4-3-2-1 Grounding Method:</h4><p>Slow your breathing down completely and actively identify these items in your room: Identify 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste. This shifts your nervous system out of survival mode.</p></div>'
     art_3 = '<div class="blog-article"><h3>3. Building Emotional Resilience in Relationships</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Healthy relationships are not defined by the absolute absence of conflict, but rather by the presence of a strong emotional recovery system. Couples who practice intentional communication preserve safety even during deep disagreements.</p><h4>Core Frameworks:</h4><ul><li><b>Shift to "I" Statements:</b> Replace accusatory phrases with empathetic ownership: "I feel disconnected when we don not catch up."</li><li><b>Validate Before Reacting:</b> Confirm clear comprehension: "What I hear you saying is that you feel overwhelmed."</li></ul></div>'
@@ -126,8 +127,3 @@ elif page == "🔒 Practice Dashboard":
             if st.button("Clear All System Bookings Permanently"):
                 if os.path.exists(DB_FILE):
                     os.remove(DB_FILE)
-                st.rerun()
-    elif password_input != "":
-        st.error("Incorrect Administration Password. Access Denied.")
-
-# 9. Clean Emergency Banner
