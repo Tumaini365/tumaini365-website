@@ -146,7 +146,6 @@ elif page == "Book an Appointment":
                     "Format": session_format,
                     "Requested Date/Time": booking_time
                 }
-                # Save dynamically down into the persistent host drive storage layout
                 save_permanent_booking(new_booking)
                 st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email.")
 
@@ -160,32 +159,40 @@ elif page == "About & Confidentiality":
     </div>
     """, unsafe_allow_html=True)
 
-# 7. PRIVATE DASHBOARD PAGE (Data is safely preserved here)
+# 7. PRIVATE DASHBOARD PAGE (With Password Protection Screen)
 elif page == "🔒 Practice Dashboard":
     st.markdown("## 🔒 Internal Practice Administration Dashboard")
-    st.write("This space is private. Intake records below are safely preserved in the file system across sessions.")
     
-    if len(current_bookings) == 0:
-        st.info("No appointment requests have been logged yet.")
-    else:
-        st.markdown("### Permanent Appointment Log")
-        df = pd.DataFrame(current_bookings)
-        st.dataframe(df, use_container_width=True)
+    # Secure Password Input Barrier
+    password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log", type="password")
+    
+    # YOUR PRIVATE SECURE PASSWORD IS SET HERE (Currently: tumaini365)
+    if password_input == "tumaini365":
+        st.success("Access Granted.")
+        st.write("Intake records below are safely preserved in the file system across sessions.")
         
-        # Download utility to save log data out into a standard physical spreadsheet layout
-        csv_data = df.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download Log as CSV (Excel Spreadsheet)",
-            data=csv_data,
-            file_name=f"tumaini365_bookings_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv",
-        )
-        
-        st.markdown("---")
-        if st.button("Clear All System Bookings Permanently"):
-            if os.path.exists(DB_FILE):
-                os.remove(DB_FILE)
-            st.rerun()
+        if len(current_bookings) == 0:
+            st.info("No appointment requests have been logged yet.")
+        else:
+            st.markdown("### Permanent Appointment Log")
+            df = pd.DataFrame(current_bookings)
+            st.dataframe(df, use_container_width=True)
+            
+            csv_data = df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="Download Log as CSV (Excel Spreadsheet)",
+                data=csv_data,
+                file_name=f"tumaini365_bookings_{datetime.now().strftime('%Y%m%d')}.csv",
+                mime="text/csv",
+            )
+            
+            st.markdown("---")
+            if st.button("Clear All System Bookings Permanently"):
+                if os.path.exists(DB_FILE):
+                    os.remove(DB_FILE)
+                st.rerun()
+    elif password_input != "":
+        st.error("Incorrect Administration Password. Access Denied.")
 
 # 8. Critical Emergency Clinical Notice Block
 st.markdown("""
