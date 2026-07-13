@@ -49,8 +49,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 2. Navigation Header Matrix
-col_logo, col_nav = st.columns()
+# 2. Navigation Header Matrix (Fixed by adding column count)
+col_logo, col_nav = st.columns(2)
 with col_logo:
     st.markdown("### 🌱 **Tumaini Three Sixty Five Limited**")
     st.caption("Professional Counselling Psychology Practice")
