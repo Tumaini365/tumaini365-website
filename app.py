@@ -159,7 +159,7 @@ elif page == "Book an Appointment":
                 save_permanent_booking(new_booking)
                 st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email.")
 
-# 6. NEW PAGE VIEW: WELLNESS INSIGHTS (BLOG SECTION)
+# 6. PAGE VIEW: WELLNESS INSIGHTS (BLOG SECTION)
 elif page == "Wellness Insights":
     st.markdown("## 📖 Wellness Insights & Psychological Advice")
     st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
