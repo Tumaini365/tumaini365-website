@@ -106,26 +106,25 @@ elif page == "Book an Appointment":
     st.markdown("## 📆 Secure Booking Engine")
     st.write("Please fill out your consultation details. Submitting this form routes data straight to our practice desk securely.")
     
-    # Form configured with target="_blank" to prevent inner frame loading crashes
+    # Form configured cleanly to process straight to the backend endpoint
     contact_form_html = f"""
     <form action="https://formsubmit.co{TARGET_EMAIL}" method="POST" target="_blank" style="background-color: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-        <input type="hidden" name="_replyto" value="%email%">
         <input type="hidden" name="_subject" value="New Tumaini 365 Booking Request!">
         <input type="hidden" name="_honeypot" style="display:none">
         
         <div style="margin-bottom: 15px;">
             <label style="font-weight:bold; display:block; margin-bottom:5px;">Full Client Name *</label>
-            <input type="text" name="name" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
+            <input type="text" name="Client Name" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
         </div>
         
         <div style="margin-bottom: 15px;">
             <label style="font-weight:bold; display:block; margin-bottom:5px;">Your Secure Email Address *</label>
-            <input type="email" name="email" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
+            <input type="email" name="_replyto" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
         </div>
         
         <div style="margin-bottom: 15px;">
             <label style="font-weight:bold; display:block; margin-bottom:5px;">Preferred Session Format *</label>
-            <select name="format" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
+            <select name="Session Format" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
                 <option value="Virtual (Secure Zoom/Meet Link)">Virtual (Secure Zoom/Meet Link)</option>
                 <option value="Face-to-Face (In-Person Office)">Face-to-Face (In-Person Office)</option>
             </select>
@@ -133,7 +132,7 @@ elif page == "Book an Appointment":
         
         <div style="margin-bottom: 20px;">
             <label style="font-weight:bold; display:block; margin-bottom:5px;">Preferred Appointment Date & Time *</label>
-            <input type="text" name="datetime" placeholder="e.g., Next Tuesday at 2:00 PM" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
+            <input type="text" name="Requested Appointment Datetime" placeholder="e.g., Next Tuesday at 2:00 PM" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
         </div>
         
         <div style="margin-bottom: 20px;">
