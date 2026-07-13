@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 from datetime import datetime
 
 # 1. Page Configuration & Brand Styling
@@ -15,7 +16,7 @@ st.markdown("""
     <style>
     .stApp { background-color: #F5EBE6; } 
     h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } 
-    p, label, span, border { color: #333333 !important; }
+    p, label, span { color: #333333 !important; }
     
     .hero-box {
         background-color: #4A7C59;
@@ -49,11 +50,29 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize a secure database slot inside the website memory if it doesn't exist yet
-if "booking_db" not in st.session_state:
-    st.session_state["booking_db"] = []
+# 2. FILE DATABASE SETUP (Permanent File Storage Solution)
+DB_FILE = "bookings.csv"
 
-# 2. Navigation Header Matrix
+def load_permanent_bookings():
+    """Loads bookings from the file or creates an empty database table structure if missing."""
+    if os.path.exists(DB_FILE):
+        try:
+            return pd.read_csv(DB_FILE).to_dict(orient="records")
+        except Exception:
+            return []
+    return []
+
+def save_permanent_booking(booking_entry):
+    """Appends a new client entry permanently into the CSV storage file."""
+    bookings = load_permanent_bookings()
+    bookings.append(booking_entry)
+    df = pd.DataFrame(bookings)
+    df.to_csv(DB_FILE, index=False)
+
+# Load existing bookings into local runtime memory context
+current_bookings = load_permanent_bookings()
+
+# 3. Navigation Header Matrix
 col_logo, col_nav = st.columns(2)
 with col_logo:
     st.markdown("### 🌱 **Tumaini Three Sixty Five Limited**")
@@ -64,7 +83,7 @@ with col_nav:
 
 st.divider()
 
-# 3. PAGE VIEW: HOME
+# 4. PAGE VIEW: HOME
 if page == "Home":
     st.markdown("""
         <div class="hero-box">
@@ -102,7 +121,7 @@ if page == "Home":
     with c3:
         st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
 
-# 4. PAGE VIEW: BOOK AN APPOINTMENT (Built Native into Streamlit)
+# 5. PAGE VIEW: BOOK AN APPOINTMENT
 elif page == "Book an Appointment":
     st.markdown("## 📆 Secure Booking Engine")
     st.write("Please fill out your consultation details below to request your intake session.")
@@ -120,7 +139,6 @@ elif page == "Book an Appointment":
             if not client_name or not client_email or not booking_time or not consent:
                 st.error("Please fill out all required fields marked with an asterisk (*).")
             else:
-                # Save data directly into the dashboard storage matrix
                 new_booking = {
                     "Submission Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "Client Name": client_name,
@@ -128,10 +146,11 @@ elif page == "Book an Appointment":
                     "Format": session_format,
                     "Requested Date/Time": booking_time
                 }
-                st.session_state["booking_db"].append(new_booking)
-                st.success("🎉 Your appointment request has been securely submitted! Our clinical desk will reach out to you shortly via email.")
+                # Save dynamically down into the persistent host drive storage layout
+                save_permanent_booking(new_booking)
+                st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email.")
 
-# 5. PAGE VIEW: ABOUT & CONFIDENTIALITY
+# 6. PAGE VIEW: ABOUT & CONFIDENTIALITY
 elif page == "About & Confidentiality":
     st.markdown("## Operational Ethics & Trust Matrix")
     st.markdown("""
@@ -141,24 +160,34 @@ elif page == "About & Confidentiality":
     </div>
     """, unsafe_allow_html=True)
 
-# 6. PRIVATE DASHBOARD PAGE (Where you read your data)
+# 7. PRIVATE DASHBOARD PAGE (Data is safely preserved here)
 elif page == "🔒 Practice Dashboard":
     st.markdown("## 🔒 Internal Practice Administration Dashboard")
-    st.write("This space is private. Only you can read the intake entries submitted by incoming site clients.")
+    st.write("This space is private. Intake records below are safely preserved in the file system across sessions.")
     
-    if len(st.session_state["booking_db"]) == 0:
-        st.info("No appointment requests have been submitted yet. When a client fills out the form, their details will display right here.")
+    if len(current_bookings) == 0:
+        st.info("No appointment requests have been logged yet.")
     else:
-        st.markdown("### Incoming Appointment Log")
-        # Turn the entries into an easy-to-read table spreadsheet automatically
-        df = pd.DataFrame(st.session_state["booking_db"])
+        st.markdown("### Permanent Appointment Log")
+        df = pd.DataFrame(current_bookings)
         st.dataframe(df, use_container_width=True)
         
-        if st.button("Clear Log Dashboard"):
-            st.session_state["booking_db"] = []
-            st.experimental_rerun()
+        # Download utility to save log data out into a standard physical spreadsheet layout
+        csv_data = df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="Download Log as CSV (Excel Spreadsheet)",
+            data=csv_data,
+            file_name=f"tumaini365_bookings_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
+        )
+        
+        st.markdown("---")
+        if st.button("Clear All System Bookings Permanently"):
+            if os.path.exists(DB_FILE):
+                os.remove(DB_FILE)
+            st.rerun()
 
-# 7. Critical Emergency Clinical Notice Block
+# 8. Critical Emergency Clinical Notice Block
 st.markdown("""
     <div class="emergency-banner">
         🚨 EMERGENCY NOTICE: If you are experiencing a severe mental health crisis or immediate self-harm emergency, please contact your local community public health authorities or national helplines instantly. We do not operate a 24/7 emergency dispatch response desk.
