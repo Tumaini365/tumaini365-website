@@ -37,6 +37,15 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
+    .blog-article {
+        background-color: #FFFFFF;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        margin-bottom: 25px;
+        border-left: 4px solid #4A7C59;
+    }
+    
     .emergency-banner {
         background-color: #FADBD8;
         color: #78281F !important;
@@ -80,7 +89,7 @@ with col_logo:
     st.caption("Professional Counselling Psychology Practice")
 
 with col_nav:
-    page = st.radio("", ["Home", "Book an Appointment", "About & Confidentiality", "🔒 Practice Dashboard"], horizontal=True, label_visibility="collapsed")
+    page = st.radio("", ["Home", "Book an Appointment", "Wellness Insights", "About & Confidentiality", "🔒 Practice Dashboard"], horizontal=True, label_visibility="collapsed")
 
 st.divider()
 
@@ -150,52 +159,52 @@ elif page == "Book an Appointment":
                 save_permanent_booking(new_booking)
                 st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email.")
 
-# 6. PAGE VIEW: ABOUT & CONFIDENTIALITY
-elif page == "About & Confidentiality":
-    st.markdown("## Operational Ethics & Trust Matrix")
+# 6. NEW PAGE VIEW: WELLNESS INSIGHTS (BLOG SECTION)
+elif page == "Wellness Insights":
+    st.markdown("## 📖 Wellness Insights & Psychological Advice")
+    st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
+    st.markdown("---")
+    
+    # Article 1
     st.markdown("""
-    <div class="card-box">
-        <p>At <b>Tumaini Three Sixty Five Limited</b>, we process clinical confidentiality protocols as our highest priority structure. 
-        Whether you interface with our practicing counseling psychologists online via video endpoints or directly at our physical rooms, your file notes, treatment strategies, and discussions are protected under medical record custody provisions.</p>
-    </div>
+        <div class="blog-article">
+            <h3>1. Navigating Workplace Burnout: Recognizing the Silent Signs</h3>
+            <p style="color: #666; font-size: 0.9rem;"><i>Published by Tumaini 365 Clinical Desk</i></p>
+            <p>Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today's fast-paced corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.</p>
+            <h4>Key Coping Strategies:</h4>
+            <ul>
+                <li><b>Establish Hard Boundaries:</b> Create strict disconnect times where corporate emails and work tasks are entirely unreachable.</li>
+                <li><b>Practice Micro-Breaks:</b> Use the 50-10 rule—work dynamically for 50 minutes, then completely step away for 10 minutes to reset your nervous system.</li>
+                <li><b>Speak to a Specialist:</b> Burnout changes cognitive processing; early professional therapy provides structural behavioral recovery frameworks.</li>
+            </ul>
+        </div>
     """, unsafe_allow_html=True)
-
-# 7. PRIVATE DASHBOARD PAGE (With Password Protection Screen)
-elif page == "🔒 Practice Dashboard":
-    st.markdown("## 🔒 Internal Practice Administration Dashboard")
     
-    password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log", type="password")
+    # Article 2
+    st.markdown("""
+        <div class="blog-article">
+            <h3>2. Grounding Techniques for Managing Acute Anxiety</h3>
+            <p style="color: #666; font-size: 0.9rem;"><i>Published by Tumaini 365 Clinical Desk</i></p>
+            <p>Anxiety pulls our attention into terrifying projections of the future. When acute anxiety or a panic episode strikes, physical grounding exercises work rapidly to signal safety directly to your brain's emotional center (the amygdala).</p>
+            <h4>The 5-4-3-2-1 Grounding Method:</h4>
+            <p>Slow your breathing down completely and actively identify the following items in your immediate physical environment:</p>
+            <ul>
+                <li><b>5 things</b> you can physically see around the room.</li>
+                <li><b>4 things</b> you can physically touch or feel (e.g., your feet on the floor, clothing fabric).</li>
+                <li><b>3 things</b> you can distinctly hear in the background.</li>
+                <li><b>2 things</b> you can distinctly smell.</li>
+                <li><b>1 thing</b> you can taste.</li>
+            </ul>
+            <p>This systematic sensory activation shifts your brain out of survival mode and safely anchors you back into the present moment.</p>
+        </div>
+    """, unsafe_allow_html=True)
     
-    if password_input == "tumaini365":
-        st.success("Access Granted.")
-        st.write("Intake records below are safely preserved in the file system across sessions.")
-        
-        if len(current_bookings) == 0:
-            st.info("No appointment requests have been logged yet.")
-        else:
-            st.markdown("### Permanent Appointment Log")
-            df = pd.DataFrame(current_bookings)
-            st.dataframe(df, use_container_width=True)
-            
-            csv_data = df.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                label="Download Log as CSV (Excel Spreadsheet)",
-                data=csv_data,
-                file_name=f"tumaini365_bookings_{datetime.now().strftime('%Y%m%d')}.csv",
-                mime="text/csv",
-            )
-            
-            st.markdown("---")
-            if st.button("Clear All System Bookings Permanently"):
-                if os.path.exists(DB_FILE):
-                    os.remove(DB_FILE)
-                st.rerun()
-    elif password_input != "":
-        st.error("Incorrect Administration Password. Access Denied.")
-
-# 8. Critical Emergency Clinical Notice Block (Updated with your custom contacts)
-st.markdown("""
-    <div class="emergency-banner">
-        🚨 EMERGENCY NOTICE: If you are experiencing a severe mental health crisis, urgent trauma, or immediate risk of self-harm, please contact our emergency response crisis lines instantly at 📞 <b>0720 545 788</b> or 📞 <b>0754 828 766</b>, or reach out to your nearest community public health hospital.
-    </div>
-""", unsafe_allow_html=True)
+    # Article 3
+    st.markdown("""
+        <div class="blog-article">
+            <h3>3. Building Emotional Resilience in Relationships</h3>
+            <p style="color: #666; font-size: 0.9rem;"><i>Published by Tumaini 365 Clinical Desk</i></p>
+            <p>Healthy relationships are not defined by the absolute absence of conflict, but rather by the presence of a strong emotional recovery system. Couples who practice intentional psychological communication preserve safety even during deep disagreements.</p>
+            <h4>Core Frameworks for Healthy Conflict:</h4>
+            <ul>
+                <li><b>Shift from "You" to "I" Statements:</b> Replace accusatory phrases like <i>"You always ignore me"</i> with empathetic ownership: <i>"I feel disconnected when we don't catch up after work."</i></li>
