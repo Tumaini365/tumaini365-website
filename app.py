@@ -49,7 +49,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 2. Navigation Header Matrix (Fixed by adding column count)
+# 2. Navigation Header Matrix
 col_logo, col_nav = st.columns(2)
 with col_logo:
     st.markdown("### 🌱 **Tumaini Three Sixty Five Limited**")
@@ -106,8 +106,9 @@ elif page == "Book an Appointment":
     st.markdown("## 📆 Secure Booking Engine")
     st.write("Please fill out your consultation details. Submitting this form routes data straight to our practice desk securely.")
     
+    # Form configured with target="_blank" to prevent inner frame loading crashes
     contact_form_html = f"""
-    <form action="https://formsubmit.co{TARGET_EMAIL}" method="POST" style="background-color: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <form action="https://formsubmit.co{TARGET_EMAIL}" method="POST" target="_blank" style="background-color: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         <input type="hidden" name="_replyto" value="%email%">
         <input type="hidden" name="_subject" value="New Tumaini 365 Booking Request!">
         <input type="hidden" name="_honeypot" style="display:none">
