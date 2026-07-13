@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+from datetime import datetime
 
 # 1. Page Configuration & Brand Styling
 st.set_page_config(
@@ -11,12 +13,10 @@ st.set_page_config(
 # Custom CSS injecting the brand color palette (Sage Green, Sand, Slate Blue)
 st.markdown("""
     <style>
-    /* Main Background & Typography colors */
-    .stApp { background-color: #F5EBE6; } /* Soft Earthy Sand Background */
-    h1, h2, h3 { color: #4A7C59 !important; font-family: 'Georgia', serif; } /* Calming Sage Green Headers */
-    p, label, span { color: #333333 !important; }
+    .stApp { background-color: #F5EBE6; } 
+    h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } 
+    p, label, span, border { color: #333333 !important; }
     
-    /* Custom Components Visual Styling */
     .hero-box {
         background-color: #4A7C59;
         padding: 45px;
@@ -31,7 +31,7 @@ st.markdown("""
         background-color: #FFFFFF;
         padding: 25px;
         border-radius: 12px;
-        border-top: 6px solid #6B8E23; /* Gentle Slate Olive Blue Anchor */
+        border-top: 6px solid #6B8E23; 
         box-shadow: 0 5px 15px rgba(0,0,0,0.04);
         margin-bottom: 20px;
     }
@@ -49,6 +49,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Initialize a secure database slot inside the website memory if it doesn't exist yet
+if "booking_db" not in st.session_state:
+    st.session_state["booking_db"] = []
+
 # 2. Navigation Header Matrix
 col_logo, col_nav = st.columns(2)
 with col_logo:
@@ -56,12 +60,9 @@ with col_logo:
     st.caption("Professional Counselling Psychology Practice")
 
 with col_nav:
-    page = st.radio("", ["Home", "Book an Appointment", "About & Confidentiality"], horizontal=True, label_visibility="collapsed")
+    page = st.radio("", ["Home", "Book an Appointment", "About & Confidentiality", "🔒 Practice Dashboard"], horizontal=True, label_visibility="collapsed")
 
 st.divider()
-
-# TARGET INBOX EMAIL CONFIGURATION
-TARGET_EMAIL = "tumaini365ltd@gmail.com"
 
 # 3. PAGE VIEW: HOME
 if page == "Home":
@@ -101,50 +102,34 @@ if page == "Home":
     with c3:
         st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
 
-# 4. PAGE VIEW: BOOK AN APPOINTMENT
+# 4. PAGE VIEW: BOOK AN APPOINTMENT (Built Native into Streamlit)
 elif page == "Book an Appointment":
     st.markdown("## 📆 Secure Booking Engine")
-    st.write("Please fill out your consultation details. Submitting this form routes data straight to our practice desk securely.")
+    st.write("Please fill out your consultation details below to request your intake session.")
     
-    # Form configured cleanly to process straight to the backend endpoint
-    contact_form_html = f"""
-    <form action="https://formsubmit.co{TARGET_EMAIL}" method="POST" target="_blank" style="background-color: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-        <input type="hidden" name="_subject" value="New Tumaini 365 Booking Request!">
-        <input type="hidden" name="_honeypot" style="display:none">
+    with st.form("native_booking_form", clear_on_submit=True):
+        client_name = st.text_input("Full Client Name *")
+        client_email = st.text_input("Your Secure Email Address *")
+        session_format = st.selectbox("Preferred Session Format *", ["Virtual (Secure Video Link)", "Face-to-Face (In-Person Office)"])
+        booking_time = st.text_input("Preferred Appointment Date & Time *", placeholder="e.g., Next Tuesday at 2:00 PM")
+        consent = st.checkbox("I confirm I am requesting a confidential clinical intake appointment.*")
         
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Full Client Name *</label>
-            <input type="text" name="Client Name" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
-        </div>
+        submit_button = st.form_submit_button("Submit Secure Request")
         
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Your Secure Email Address *</label>
-            <input type="email" name="_replyto" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
-        </div>
-        
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Preferred Session Format *</label>
-            <select name="Session Format" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
-                <option value="Virtual (Secure Zoom/Meet Link)">Virtual (Secure Zoom/Meet Link)</option>
-                <option value="Face-to-Face (In-Person Office)">Face-to-Face (In-Person Office)</option>
-            </select>
-        </div>
-        
-        <div style="margin-bottom: 20px;">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Preferred Appointment Date & Time *</label>
-            <input type="text" name="Requested Appointment Datetime" placeholder="e.g., Next Tuesday at 2:00 PM" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" required>
-        </div>
-        
-        <div style="margin-bottom: 20px;">
-            <input type="checkbox" required> <span style="font-size:0.9rem; color:#555;">I confirm I am requesting a confidential clinical intake appointment.</span>
-        </div>
-        
-        <button type="submit" style="background-color: #4A7C59; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; width: 100%;">
-            Submit Secure Request
-        </button>
-    </form>
-    """
-    st.components.v1.html(contact_form_html, height=520, scrolling=False)
+        if submit_button:
+            if not client_name or not client_email or not booking_time or not consent:
+                st.error("Please fill out all required fields marked with an asterisk (*).")
+            else:
+                # Save data directly into the dashboard storage matrix
+                new_booking = {
+                    "Submission Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    "Client Name": client_name,
+                    "Client Email": client_email,
+                    "Format": session_format,
+                    "Requested Date/Time": booking_time
+                }
+                st.session_state["booking_db"].append(new_booking)
+                st.success("🎉 Your appointment request has been securely submitted! Our clinical desk will reach out to you shortly via email.")
 
 # 5. PAGE VIEW: ABOUT & CONFIDENTIALITY
 elif page == "About & Confidentiality":
@@ -156,7 +141,24 @@ elif page == "About & Confidentiality":
     </div>
     """, unsafe_allow_html=True)
 
-# 6. Critical Emergency Clinical Notice Block
+# 6. PRIVATE DASHBOARD PAGE (Where you read your data)
+elif page == "🔒 Practice Dashboard":
+    st.markdown("## 🔒 Internal Practice Administration Dashboard")
+    st.write("This space is private. Only you can read the intake entries submitted by incoming site clients.")
+    
+    if len(st.session_state["booking_db"]) == 0:
+        st.info("No appointment requests have been submitted yet. When a client fills out the form, their details will display right here.")
+    else:
+        st.markdown("### Incoming Appointment Log")
+        # Turn the entries into an easy-to-read table spreadsheet automatically
+        df = pd.DataFrame(st.session_state["booking_db"])
+        st.dataframe(df, use_container_width=True)
+        
+        if st.button("Clear Log Dashboard"):
+            st.session_state["booking_db"] = []
+            st.experimental_rerun()
+
+# 7. Critical Emergency Clinical Notice Block
 st.markdown("""
     <div class="emergency-banner">
         🚨 EMERGENCY NOTICE: If you are experiencing a severe mental health crisis or immediate self-harm emergency, please contact your local community public health authorities or national helplines instantly. We do not operate a 24/7 emergency dispatch response desk.
