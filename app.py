@@ -10,15 +10,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. RESTORING BRAND COLOR CODES WITH COMPACT LAYOUT FIX
+# 2. RESTORING BRAND COLOR CODES
 st.markdown("""
     <style>
-    /* Main Background & Base Typography colors */
     .stApp { background-color: #F5EBE6 !important; } 
     h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } 
     p, label, span { color: #333333 !important; }
     
-    /* Top Navigation Tab Customizations */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
     .stTabs [data-baseweb="tab"] {
         background-color: #FFFFFF;
@@ -26,35 +24,6 @@ st.markdown("""
         border-radius: 8px;
         border-top: 3px solid #6B8E23; 
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    
-    /* Brand Component Visual Blocks */
-    .hero-box {
-        background-color: #4A7C59; 
-        padding: 35px;
-        border-radius: 16px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .hero-box h1 { color: #FFFFFF !important; }
-    .hero-box p { color: #F5EBE6 !important; }
-    
-    .card-box {
-        background-color: #FFFFFF;
-        padding: 20px;
-        border-radius: 12px;
-        border-top: 6px solid #6B8E23; 
-        box-shadow: 0 5px 15px rgba(0,0,0,0.04);
-        margin-bottom: 15px;
-    }
-    
-    .blog-article {
-        background-color: #FFFFFF;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        margin-bottom: 20px;
-        border-left: 4px solid #4A7C59;
     }
     
     .custom-emergency-banner {
@@ -71,7 +40,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. FILE DATABASE SETUP (Permanent File Storage Solution)
+# 3. FILE DATABASE SETUP
 DB_FILE = "bookings.csv"
 
 def load_permanent_bookings():
@@ -104,11 +73,11 @@ def update_assessment_data(client_email, assessment_status):
 
 current_bookings = load_permanent_bookings()
 
-# 4. Static Title Branding Header
+# 4. Title Header
 st.title("🌱 Tumaini Three Sixty Five Limited")
 st.caption("Professional Counselling Psychology Practice")
 
-# 5. HORIZONTAL BUTTON TABS NAVIGATION
+# 5. HORIZONTAL NAVIGATION BUTTONS
 tab_home, tab_book, tab_screen, tab_blog, tab_about, tab_dash = st.tabs([
     "🏠 Home", 
     "📆 Book an Appointment", 
@@ -118,35 +87,31 @@ tab_home, tab_book, tab_screen, tab_blog, tab_about, tab_dash = st.tabs([
     "🔒 Practice Dashboard"
 ])
 
-# 6. TAB CONTENT LAYOUT BLOCKS
+# 6. TAB BLOCKS
 
-# TAB VIEW: HOME
+# HOME SECTION
 with tab_home:
-    st.markdown("""
-        <div class="hero-box">
-            <h1>A Safe Space to Heal, Grow, and Thrive 365 Days a Year</h1>
-            <p style="font-size:1.25rem;">Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.</p>
-        </div>
-    """, unsafe_allow_html=True)
+    st.header("A Safe Space to Heal, Grow, and Thrive 365 Days a Year")
+    st.write("Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.")
     
-    st.markdown("## Our Therapeutic Formats")
+    st.subheader("Our Therapeutic Formats")
     col_v, col_f = st.columns(2)
     with col_v:
-        st.markdown("<div class='card-box'><h3>🌐 Virtual Telehealth Sessions</h3><p>Secure, fully encrypted video sessions accessible from the total privacy of your home or private workspace.</p></div>", unsafe_allow_html=True)
+        st.info("🌐 **Virtual Telehealth Sessions:** Secure, fully encrypted video sessions accessible from the total privacy of your home or private workspace.")
     with col_f:
-        st.markdown("<div class='card-box'><h3>🏢 Face-to-Face Sessions</h3><p>In-person clinical appointments hosted inside our quiet, warm, and highly discreet consulting offices.</p></div>", unsafe_allow_html=True)
+        st.info("🏢 **Face-to-Face Sessions:** In-person clinical appointments hosted inside our quiet, warm, and highly discreet consulting offices.")
         
     st.divider()
-    st.markdown("## Areas of Clinical Expertise")
+    st.subheader("Areas of Clinical Expertise")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown("<div class='card-box'><h4>Individual Care</h4><p>Anxiety management, burnout recovery, depression therapy, and lifestyle adjustment transitions.</p></div>", unsafe_allow_html=True)
+        st.success("**Individual Care:** Anxiety management, burnout recovery, depression therapy, and lifestyle adjustment transitions.")
     with c2:
-        st.markdown("<div class='card-box'><h4>Relationship Care</h4><p>Couples counseling, family rebuilding frameworks, and healthy communication skills.</p></div>", unsafe_allow_html=True)
+        st.success("**Relationship Care:** Couples counseling, family rebuilding frameworks, and healthy communication skills.")
     with c3:
-        st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
+        st.success("**Corporate Wellness:** Workplace mental health design workshops, leadership trauma training, and staff care plans.")
 
-# TAB VIEW: BOOK AN APPOINTMENT
+# BOOKING SECTION
 with tab_book:
     st.subheader("📆 Secure Booking Engine")
     st.write("Please select your consultation details below to request your intake session.")
@@ -181,9 +146,9 @@ with tab_book:
                 save_permanent_booking(new_booking)
                 st.success("🎉 Your appointment request is locked in! Please open the 'Mental Health Screening' tab above to complete your baseline clinical assessment.")
 
-# TAB VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
+# SCREENING SECTION
 with tab_screen:
-    st.markdown("## 📊 Baseline Anxiety Assessment (GAD-7)")
+    st.subheader("📊 Baseline Anxiety Assessment (GAD-7)")
     st.write("Over the last 2 weeks, how often have you been bothered by the following problems?")
     
     v_email = st.text_input("Enter the exact Email Address used during booking to match your profile*")
@@ -220,9 +185,23 @@ with tab_screen:
             else:
                 st.warning("Assessment complete, but we could not trace a matching booking for this specific email address.")
 
-# TAB VIEW: WELLNESS INSIGHTS
+# BLOG SECTION (Rewritten without HTML string bugs)
 with tab_blog:
-    st.markdown("## 📖 Wellness Insights & Psychological Advice")
+    st.subheader("📖 Wellness Insights & Psychological Advice")
     st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
+    st.divider()
+    
+    st.markdown("### 1. Navigating Workplace Burnout: Recognizing the Silent Signs")
+    st.write("Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today's corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.")
+    st.markdown("**Key Coping Strategies:**")
+    st.write("- **Establish Hard Boundaries:** Create strict disconnect times where corporate emails and work tasks are entirely unreachable.")
+    st.write("- **Practice Micro-Breaks:** Use the 50-10 rule—work dynamically for 50 minutes, then completely step away for 10 minutes to reset your nervous system.")
+    st.write("- **Speak to a Specialist:** Burnout changes cognitive processing; early professional therapy provides structural behavioral recovery frameworks.")
+    st.divider()
+    
+    st.markdown("### 2. Grounding Techniques for Managing Acute Anxiety")
+    st.write("Anxiety pulls our attention into terrifying projections of the future. When acute anxiety or a panic episode strikes, physical grounding exercises work rapidly to signal safety directly to your brain's emotional center.")
+    st.markdown("**The 5-4-3-2-1 Grounding Method:**")
+    st.write("Slow your breathing down completely and actively identify these items in your room: Identify 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste. This shifts your nervous system out of survival mode.")
     st.divider()
     
