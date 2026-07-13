@@ -32,7 +32,6 @@ def save_permanent_booking(booking_entry):
     df.to_csv(DB_FILE, index=False)
 
 def update_assessment_data(client_email, assessment_status):
-    """Finds the last booking with this email and appends the GAD score text."""
     bookings = load_permanent_bookings()
     updated = False
     for b in reversed(bookings):
@@ -45,8 +44,6 @@ def update_assessment_data(client_email, assessment_status):
         df.to_csv(DB_FILE, index=False)
         return True
     return False
-
-current_bookings = load_permanent_bookings()
 
 # 3. Navigation Header Matrix
 col_logo, col_nav = st.columns(2)
@@ -113,14 +110,12 @@ elif page == "Book an Appointment":
                 save_permanent_booking(new_booking)
                 st.success("🎉 Your appointment request is locked in! Please click on the 'Mental Health Screening' tab above next to complete your baseline clinical assessment.")
 
-# 6. NEW PAGE VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
+# 6. PAGE VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
 elif page == "Mental Health Screening":
     st.markdown("## 📊 Baseline Anxiety Assessment (GAD-7)")
     st.write("Over the last 2 weeks, how often have you been bothered by the following problems?")
     
-    # Validation Email Link Box
     v_email = st.text_input("Enter the exact Email Address used during booking to match your profile*")
-    
     options_map = {"Not at all": 0, "Several days": 1, "More than half the days": 2, "Nearly every day": 3}
     
     q1 = st.radio("1. Feeling nervous, anxious, or on edge", list(options_map.keys()))
@@ -135,9 +130,7 @@ elif page == "Mental Health Screening":
         if not v_email:
             st.error("Please provide your email address to sync your assessment score details safely.")
         else:
-            # Calculate clinical GAD score metrics dynamically
             total_score = options_map[q1] + options_map[q2] + options_map[q3] + options_map[q4] + options_map[q5] + options_map[q6] + options_map[q7]
-            
             if total_score <= 4:
                 severity = "Minimal Anxiety"
             elif total_score <= 9:
@@ -148,8 +141,6 @@ elif page == "Mental Health Screening":
                 severity = "Severe Anxiety"
                 
             status_text = f"Score: {total_score} ({severity})"
-            
-            # Map down updates directly into persistent CSV drive
             success_sync = update_assessment_data(v_email, status_text)
             
             st.markdown(f"### **Your Baseline Result:** Score {total_score} - **{severity}**")
