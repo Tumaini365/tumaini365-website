@@ -43,17 +43,25 @@ def update_assessment_data(client_email, assessment_status):
 
 current_bookings = load_permanent_bookings()
 
-# 3. Simple Standard Navigation Menu
+# 3. Static Practice Title Branding Header
 st.title("🌱 Tumaini Three Sixty Five Limited")
 st.caption("Professional Counselling Psychology Practice")
 
-# Use a clean selectbox menu at the top so it never conflicts with the layout structure
-page = st.selectbox("Navigate Website Sections:", ["Home", "Book an Appointment", "Mental Health Screening", "Wellness Insights", "About & Confidentiality", "🔒 Practice Dashboard"])
+# 4. HORIZONTAL BUTTON TABS NAVIGATION
+# This generates clean horizontal buttons across the top of your layout matrix
+tab_home, tab_book, tab_screen, tab_blog, tab_about, tab_dash = st.tabs([
+    "🏠 Home", 
+    "📆 Book an Appointment", 
+    "📊 Mental Health Screening", 
+    "📖 Wellness Insights", 
+    "💡 About & Confidentiality", 
+    "🔒 Practice Dashboard"
+])
 
-st.divider()
+# 5. BUTTON TAB CONTENT BLOCKS
 
-# 4. PAGE VIEW: HOME
-if page == "Home":
+# TAB VIEW: HOME
+with tab_home:
     st.header("A Safe Space to Heal, Grow, and Thrive 365 Days a Year")
     st.write("Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.")
     
@@ -74,8 +82,8 @@ if page == "Home":
     with c3:
         st.success("**Corporate Wellness:** Workplace mental health design workshops, leadership trauma training, and staff care plans.")
 
-# 5. PAGE VIEW: BOOK AN APPOINTMENT
-elif page == "Book an Appointment":
+# TAB VIEW: BOOK AN APPOINTMENT
+with tab_book:
     st.subheader("📆 Secure Booking Engine")
     st.write("Please select your consultation details below to request your intake session.")
     with st.form("native_booking_form", clear_on_submit=True):
@@ -107,10 +115,10 @@ elif page == "Book an Appointment":
                     "Anxiety Status (GAD-7)": "Not yet assessed"
                 }
                 save_permanent_booking(new_booking)
-                st.success("🎉 Your appointment request is locked in! Please open the menu above and choose 'Mental Health Screening' to complete your baseline clinical assessment.")
+                st.success("🎉 Your appointment request is locked in! Please open the 'Mental Health Screening' tab above to complete your baseline clinical assessment.")
 
-# 6. PAGE VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
-elif page == "Mental Health Screening":
+# TAB VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
+with tab_screen:
     st.subheader("📊 Baseline Anxiety Assessment (GAD-7)")
     st.write("Over the last 2 weeks, how often have you been bothered by the following problems?")
     
@@ -148,10 +156,11 @@ elif page == "Mental Health Screening":
             else:
                 st.warning("Assessment complete, but we could not trace a matching booking for this specific email address.")
 
-# 7. PAGE VIEW: WELLNESS INSIGHTS
-elif page == "Wellness Insights":
+# TAB VIEW: WELLNESS INSIGHTS (BLOG SECTION)
+with tab_blog:
     st.subheader("📖 Wellness Insights & Psychological Advice")
     st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
+    st.divider()
     
     st.markdown("### 1. Navigating Workplace Burnout")
     st.write("Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today's corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.")
@@ -162,13 +171,13 @@ elif page == "Wellness Insights":
     st.markdown("### 3. Building Emotional Resilience in Relationships")
     st.write("Healthy relationships are not defined by the absolute absence of conflict, but rather by the presence of a strong emotional recovery system.")
 
-# 8. PAGE VIEW: ABOUT & CONFIDENTIALITY
-elif page == "About & Confidentiality":
+# TAB VIEW: ABOUT & CONFIDENTIALITY
+with tab_about:
     st.subheader("Operational Ethics & Trust Matrix")
     st.write("At Tumaini Three Sixty Five Limited, we process clinical confidentiality protocols as our highest priority structure. Whether you interface with our practicing counseling psychologists online via video endpoints or directly at our physical rooms, your file notes, treatment strategies, and discussions are protected under medical record custody provisions.")
 
-# 9. PRIVATE DASHBOARD PAGE (Completely Error-Proofed)
-elif page == "🔒 Practice Dashboard":
+# TAB VIEW: PRIVATE ADMIN DASHBOARD
+with tab_dash:
     st.subheader("🔒 Internal Practice Administration Dashboard")
     password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log:", type="password")
     
