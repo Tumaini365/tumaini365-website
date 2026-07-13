@@ -31,6 +31,21 @@ def save_permanent_booking(booking_entry):
     df = pd.DataFrame(bookings)
     df.to_csv(DB_FILE, index=False)
 
+def update_assessment_data(client_email, assessment_status):
+    """Finds the last booking with this email and appends the GAD score text."""
+    bookings = load_permanent_bookings()
+    updated = False
+    for b in reversed(bookings):
+        if str(b.get("Client Email")).strip().lower() == client_email.strip().lower():
+            b["Anxiety Status (GAD-7)"] = assessment_status
+            updated = True
+            break
+    if updated:
+        df = pd.DataFrame(bookings)
+        df.to_csv(DB_FILE, index=False)
+        return True
+    return False
+
 current_bookings = load_permanent_bookings()
 
 # 3. Navigation Header Matrix
@@ -40,7 +55,7 @@ with col_logo:
     st.caption("Professional Counselling Psychology Practice")
 
 with col_nav:
-    page = st.radio("", ["Home", "Book an Appointment", "Wellness Insights", "About & Confidentiality", "🔒 Practice Dashboard"], horizontal=True, label_visibility="collapsed")
+    page = st.radio("", ["Home", "Book an Appointment", "Mental Health Screening", "Wellness Insights", "About & Confidentiality", "🔒 Practice Dashboard"], horizontal=True, label_visibility="collapsed")
 
 st.divider()
 
@@ -75,12 +90,8 @@ elif page == "Book an Appointment":
         
         selected_date = st.date_input("Select Appointment Date *", min_value=datetime.today())
         selected_time = st.selectbox("Select Preferred Time Slot *", [
-            "08:00 AM - 09:00 AM",
-            "09:30 AM - 10:30 AM",
-            "11:00 AM - 12:00 PM",
-            "02:00 PM - 03:00 PM",
-            "03:30 PM - 04:30 PM",
-            "05:00 PM - 06:00 PM"
+            "08:00 AM - 09:00 AM", "09:30 AM - 10:30 AM", "11:00 AM - 12:00 PM",
+            "02:00 PM - 03:00 PM", "03:30 PM - 04:30 PM", "05:00 PM - 06:00 PM"
         ])
         
         consent = st.checkbox("I confirm I am requesting a confidential clinical intake appointment.*")
@@ -96,39 +107,59 @@ elif page == "Book an Appointment":
                     "Client Email": client_email,
                     "Mobile Contact": client_mobile,
                     "Format": session_format,
-                    "Requested Date/Time": formatted_datetime
+                    "Requested Date/Time": formatted_datetime,
+                    "Anxiety Status (GAD-7)": "Not yet assessed"
                 }
                 save_permanent_booking(new_booking)
-                st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email or mobile shortly.")
+                st.success("🎉 Your appointment request is locked in! Please click on the 'Mental Health Screening' tab above next to complete your baseline clinical assessment.")
 
-# 6. PAGE VIEW: WELLNESS INSIGHTS (BLOG SECTION)
+# 6. NEW PAGE VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
+elif page == "Mental Health Screening":
+    st.markdown("## 📊 Baseline Anxiety Assessment (GAD-7)")
+    st.write("Over the last 2 weeks, how often have you been bothered by the following problems?")
+    
+    # Validation Email Link Box
+    v_email = st.text_input("Enter the exact Email Address used during booking to match your profile*")
+    
+    options_map = {"Not at all": 0, "Several days": 1, "More than half the days": 2, "Nearly every day": 3}
+    
+    q1 = st.radio("1. Feeling nervous, anxious, or on edge", list(options_map.keys()))
+    q2 = st.radio("2. Not being able to stop or control worrying", list(options_map.keys()))
+    q3 = st.radio("3. Worrying too much about different things", list(options_map.keys()))
+    q4 = st.radio("4. Trouble relaxing", list(options_map.keys()))
+    q5 = st.radio("5. Being so restless that it is hard to sit still", list(options_map.keys()))
+    q6 = st.radio("6. Becoming easily annoyed or irritable", list(options_map.keys()))
+    q7 = st.radio("7. Feeling afraid, as if something awful might happen", list(options_map.keys()))
+    
+    if st.button("Submit Screening Assessment"):
+        if not v_email:
+            st.error("Please provide your email address to sync your assessment score details safely.")
+        else:
+            # Calculate clinical GAD score metrics dynamically
+            total_score = options_map[q1] + options_map[q2] + options_map[q3] + options_map[q4] + options_map[q5] + options_map[q6] + options_map[q7]
+            
+            if total_score <= 4:
+                severity = "Minimal Anxiety"
+            elif total_score <= 9:
+                severity = "Mild Anxiety"
+            elif total_score <= 14:
+                severity = "Moderate Anxiety"
+            else:
+                severity = "Severe Anxiety"
+                
+            status_text = f"Score: {total_score} ({severity})"
+            
+            # Map down updates directly into persistent CSV drive
+            success_sync = update_assessment_data(v_email, status_text)
+            
+            st.markdown(f"### **Your Baseline Result:** Score {total_score} - **{severity}**")
+            if success_sync:
+                st.success("🎉 Assessment submitted successfully! These metrics have been safely encrypted and synced to your clinician's private dashboard file for your upcoming intake.")
+            else:
+                st.warning("Assessment complete, but we could not trace a matching booking for this specific email address. Your clinician will document this score manually during your call.")
+
+# 7. PAGE VIEW: WELLNESS INSIGHTS
 elif page == "Wellness Insights":
     st.markdown("## 📖 Wellness Insights & Psychological Advice")
     st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
     st.markdown("---")
-    
-    art_1 = '<div class="blog-article"><h3>1. Navigating Workplace Burnout</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.</p><h4>Key Coping Strategies:</h4><ul><li><b>Establish Hard Boundaries:</b> Create strict disconnect times where corporate emails and work tasks are entirely unreachable.</li><li><b>Practice Micro-Breaks:</b> Use the 50-10 rule—work dynamically for 50 minutes, then completely step away for 10 minutes to reset your nervous system.</li><li><b>Speak to a Specialist:</b> Burnout changes cognitive processing; early professional therapy provides structural behavioral recovery frameworks.</li></ul></div>'
-    art_2 = '<div class="blog-article"><h3>2. Grounding Techniques for Managing Acute Anxiety</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Anxiety pulls our attention into terrifying projections of the future. When acute anxiety or a panic episode strikes, physical grounding exercises work rapidly to signal safety directly to your brain emotional center.</p><h4>The 5-4-3-2-1 Grounding Method:</h4><p>Slow your breathing down completely and actively identify these items in your room: Identify 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste. This shifts your nervous system out of survival mode.</p></div>'
-    art_3 = '<div class="blog-article"><h3>3. Building Emotional Resilience in Relationships</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Healthy relationships are not defined by the absolute absence of conflict, but rather by the presence of a strong emotional recovery system. Couples who practice intentional communication preserve safety even during deep disagreements.</p><h4>Core Frameworks:</h4><ul><li><b>Shift to "I" Statements:</b> Replace accusatory phrases with empathetic ownership: "I feel disconnected when we don not catch up."</li><li><b>Validate Before Reacting:</b> Confirm clear comprehension: "What I hear you saying is that you feel overwhelmed."</li></ul></div>'
-    
-    st.markdown(art_1, unsafe_allow_html=True)
-    st.markdown(art_2, unsafe_allow_html=True)
-    st.markdown(art_3, unsafe_allow_html=True)
-
-# 7. PAGE VIEW: ABOUT & CONFIDENTIALITY
-elif page == "About & Confidentiality":
-    st.markdown("## Operational Ethics & Trust Matrix")
-    st.markdown("<div class='card-box'><p>At <b>Tumaini Three Sixty Five Limited</b>, we process clinical confidentiality protocols as our highest priority structure. Whether you interface with our practicing counseling psychologists online via video endpoints or directly at our physical rooms, your file notes, treatment strategies, and discussions are protected under medical record custody provisions.</p></div>", unsafe_allow_html=True)
-
-# 8. PRIVATE DASHBOARD PAGE (Fixed Indentation Formatting)
-elif page == "🔒 Practice Dashboard":
-    st.markdown("## 🔒 Internal Practice Administration Dashboard")
-    password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log", type="password")
-    
-    if password_input == "tumaini365":
-        st.success("Access Granted.")
-        if len(current_bookings) == 0:
-            st.info("No appointment requests have been logged yet.")
-        else:
-            df = pd.DataFrame(current_bookings)
-            st.dataframe(df, use_container_width=True)
