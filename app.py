@@ -3,16 +3,12 @@ import pandas as pd
 import os
 from datetime import datetime
 
-# 1. Page Configuration & Brand Styling
+# 1. Page Configuration
 st.set_page_config(
     page_title="Tumaini 365 | Counselling Psychology",
     page_icon="🌱",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
-
-# Injecting CSS layout rules using clean single strings
-st.markdown("<style>.stApp { background-color: #F5EBE6; } h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } p, label, span { color: #333333 !important; } .hero-box { background-color: #4A7C59; padding: 45px; border-radius: 16px; text-align: center; margin-bottom: 30px; } .hero-box h1 { color: #FFFFFF !important; } .hero-box p { color: #F5EBE6 !important; } .card-box { background-color: #FFFFFF; padding: 25px; border-radius: 12px; border-top: 6px solid #6B8E23; box-shadow: 0 5px 15px rgba(0,0,0,0.04); margin-bottom: 20px; } .blog-article { background-color: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); margin-bottom: 25px; border-left: 4px solid #4A7C59; } .emergency-banner { background-color: #FADBD8; color: #78281F !important; padding: 18px; border-radius: 8px; font-weight: bold; text-align: center; margin-top: 40px; border: 1px solid #E6B0AA; font-size: 1.1rem; }</style>", unsafe_allow_html=True)
 
 # 2. FILE DATABASE SETUP (Permanent File Storage Solution)
 DB_FILE = "bookings.csv"
@@ -45,39 +41,42 @@ def update_assessment_data(client_email, assessment_status):
         return True
     return False
 
-# 3. Navigation Header Matrix
-col_logo, col_nav = st.columns(2)
-with col_logo:
-    st.markdown("### 🌱 **Tumaini Three Sixty Five Limited**")
-    st.caption("Professional Counselling Psychology Practice")
+current_bookings = load_permanent_bookings()
 
-with col_nav:
-    page = st.radio("", ["Home", "Book an Appointment", "Mental Health Screening", "Wellness Insights", "About & Confidentiality", "🔒 Practice Dashboard"], horizontal=True, label_visibility="collapsed")
+# 3. Simple Standard Navigation Menu
+st.title("🌱 Tumaini Three Sixty Five Limited")
+st.caption("Professional Counselling Psychology Practice")
+
+# Use a clean selectbox menu at the top so it never conflicts with the layout structure
+page = st.selectbox("Navigate Website Sections:", ["Home", "Book an Appointment", "Mental Health Screening", "Wellness Insights", "About & Confidentiality", "🔒 Practice Dashboard"])
 
 st.divider()
 
 # 4. PAGE VIEW: HOME
 if page == "Home":
-    st.markdown("<div class='hero-box'><h1>A Safe Space to Heal, Grow, and Thrive 365 Days a Year</h1><p style='font-size:1.25rem;'>Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.</p></div>", unsafe_allow_html=True)
-    st.markdown("## Our Therapeutic Formats")
+    st.header("A Safe Space to Heal, Grow, and Thrive 365 Days a Year")
+    st.write("Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.")
+    
+    st.subheader("Our Therapeutic Formats")
     col_v, col_f = st.columns(2)
     with col_v:
-        st.markdown("<div class='card-box'><h3>🌐 Virtual Telehealth Sessions</h3><p>Secure, fully encrypted video sessions accessible from the total privacy of your home or private workspace.</p></div>", unsafe_allow_html=True)
+        st.info("🌐 **Virtual Telehealth Sessions:** Secure, fully encrypted video sessions accessible from the total privacy of your home or private workspace.")
     with col_f:
-        st.markdown("<div class='card-box'><h3>🏢 Face-to-Face Sessions</h3><p>In-person clinical appointments hosted inside our quiet, warm, and highly discreet consulting offices.</p></div>", unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("## Areas of Clinical Expertise")
+        st.info("🏢 **Face-to-Face Sessions:** In-person clinical appointments hosted inside our quiet, warm, and highly discreet consulting offices.")
+        
+    st.divider()
+    st.subheader("Areas of Clinical Expertise")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown("<div class='card-box'><h4>Individual Care</h4><p>Anxiety management, burnout recovery, depression therapy, and lifestyle adjustment transitions.</p></div>", unsafe_allow_html=True)
+        st.success("**Individual Care:** Anxiety management, burnout recovery, depression therapy, and lifestyle adjustment transitions.")
     with c2:
-        st.markdown("<div class='card-box'><h4>Relationship Care</h4><p>Couples counseling, family rebuilding frameworks, and healthy communication skills.</p></div>", unsafe_allow_html=True)
+        st.success("**Relationship Care:** Couples counseling, family rebuilding frameworks, and healthy communication skills.")
     with c3:
-        st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
+        st.success("**Corporate Wellness:** Workplace mental health design workshops, leadership trauma training, and staff care plans.")
 
 # 5. PAGE VIEW: BOOK AN APPOINTMENT
 elif page == "Book an Appointment":
-    st.markdown("## 📆 Secure Booking Engine")
+    st.subheader("📆 Secure Booking Engine")
     st.write("Please select your consultation details below to request your intake session.")
     with st.form("native_booking_form", clear_on_submit=True):
         client_name = st.text_input("Full Client Name *")
@@ -108,11 +107,11 @@ elif page == "Book an Appointment":
                     "Anxiety Status (GAD-7)": "Not yet assessed"
                 }
                 save_permanent_booking(new_booking)
-                st.success("🎉 Your appointment request is locked in! Please click on the 'Mental Health Screening' tab above next to complete your baseline clinical assessment.")
+                st.success("🎉 Your appointment request is locked in! Please open the menu above and choose 'Mental Health Screening' to complete your baseline clinical assessment.")
 
 # 6. PAGE VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
 elif page == "Mental Health Screening":
-    st.markdown("## 📊 Baseline Anxiety Assessment (GAD-7)")
+    st.subheader("📊 Baseline Anxiety Assessment (GAD-7)")
     st.write("Over the last 2 weeks, how often have you been bothered by the following problems?")
     
     v_email = st.text_input("Enter the exact Email Address used during booking to match your profile*")
@@ -145,12 +144,45 @@ elif page == "Mental Health Screening":
             
             st.markdown(f"### **Your Baseline Result:** Score {total_score} - **{severity}**")
             if success_sync:
-                st.success("🎉 Assessment submitted successfully! These metrics have been safely encrypted and synced to your clinician's private dashboard file for your upcoming intake.")
+                st.success("🎉 Assessment submitted successfully! These metrics have been safely synced to your clinician's private dashboard.")
             else:
-                st.warning("Assessment complete, but we could not trace a matching booking for this specific email address. Your clinician will document this score manually during your call.")
+                st.warning("Assessment complete, but we could not trace a matching booking for this specific email address.")
 
 # 7. PAGE VIEW: WELLNESS INSIGHTS
 elif page == "Wellness Insights":
-    st.markdown("## 📖 Wellness Insights & Psychological Advice")
+    st.subheader("📖 Wellness Insights & Psychological Advice")
     st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
-    st.markdown("---")
+    
+    st.markdown("### 1. Navigating Workplace Burnout")
+    st.write("Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today's corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.")
+    
+    st.markdown("### 2. Grounding Techniques for Managing Acute Anxiety")
+    st.write("Anxiety pulls our attention into terrifying projections of the future. When acute anxiety or a panic episode strikes, physical grounding exercises work rapidly to signal safety directly to your brain's emotional center.")
+    
+    st.markdown("### 3. Building Emotional Resilience in Relationships")
+    st.write("Healthy relationships are not defined by the absolute absence of conflict, but rather by the presence of a strong emotional recovery system.")
+
+# 8. PAGE VIEW: ABOUT & CONFIDENTIALITY
+elif page == "About & Confidentiality":
+    st.subheader("Operational Ethics & Trust Matrix")
+    st.write("At Tumaini Three Sixty Five Limited, we process clinical confidentiality protocols as our highest priority structure. Whether you interface with our practicing counseling psychologists online via video endpoints or directly at our physical rooms, your file notes, treatment strategies, and discussions are protected under medical record custody provisions.")
+
+# 9. PRIVATE DASHBOARD PAGE (Completely Error-Proofed)
+elif page == "🔒 Practice Dashboard":
+    st.subheader("🔒 Internal Practice Administration Dashboard")
+    password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log:", type="password")
+    
+    if password_input == "tumaini365":
+        st.success("Access Granted.")
+        fresh_data = load_permanent_bookings()
+        if len(fresh_data) == 0:
+            st.info("No appointment requests have been logged yet.")
+        else:
+            st.write("### Permanent Appointment Log")
+            df = pd.DataFrame(fresh_data)
+            st.dataframe(df, use_container_width=True)
+            
+            csv_data = df.to_csv(index=False).encode('utf-8')
+            st.download_button(label="Download Log as Excel Spreadsheet", data=csv_data, file_name="tumaini365_bookings.csv", mime="text/csv")
+            
+            st.divider()
