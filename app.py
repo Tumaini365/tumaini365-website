@@ -10,61 +10,61 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. RESTORING BRAND COLOR CODES (Sage Green, Earthy Sand, Slate Olive)
+# 2. RESTORING BRAND COLOR CODES WITH COMPACT LAYOUT FIX
 st.markdown("""
     <style>
     /* Main Background & Base Typography colors */
-    .stApp { background-color: #F5EBE6 !important; } /* Soft Earthy Sand Background */
-    h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } /* Calming Sage Green Headers */
+    .stApp { background-color: #F5EBE6 !important; } 
+    h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } 
     p, label, span { color: #333333 !important; }
     
     /* Top Navigation Tab Customizations */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
     .stTabs [data-baseweb="tab"] {
         background-color: #FFFFFF;
-        padding: 10px 20px;
+        padding: 8px 16px;
         border-radius: 8px;
-        border-top: 3px solid #6B8E23; /* Slate Olive Anchor */
+        border-top: 3px solid #6B8E23; 
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
     
     /* Brand Component Visual Blocks */
     .hero-box {
-        background-color: #4A7C59; /* Deep Sage Banner background */
-        padding: 45px;
+        background-color: #4A7C59; 
+        padding: 35px;
         border-radius: 16px;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
     .hero-box h1 { color: #FFFFFF !important; }
     .hero-box p { color: #F5EBE6 !important; }
     
     .card-box {
         background-color: #FFFFFF;
-        padding: 25px;
+        padding: 20px;
         border-radius: 12px;
-        border-top: 6px solid #6B8E23; /* Slate Olive Top Accent */
+        border-top: 6px solid #6B8E23; 
         box-shadow: 0 5px 15px rgba(0,0,0,0.04);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     
     .blog-article {
         background-color: #FFFFFF;
-        padding: 30px;
+        padding: 25px;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         border-left: 4px solid #4A7C59;
     }
     
     .custom-emergency-banner {
         background-color: #FADBD8;
         color: #78281F !important;
-        padding: 18px;
+        padding: 15px;
         border-radius: 8px;
         font-weight: bold;
         text-align: center;
-        margin-top: 40px;
+        margin-top: 25px;
         border: 1px solid #E6B0AA;
         font-size: 1.1rem;
     }
@@ -148,7 +148,7 @@ with tab_home:
 
 # TAB VIEW: BOOK AN APPOINTMENT
 with tab_book:
-    st.markdown("## 📆 Secure Booking Engine")
+    st.subheader("📆 Secure Booking Engine")
     st.write("Please select your consultation details below to request your intake session.")
     with st.form("native_booking_form", clear_on_submit=True):
         client_name = st.text_input("Full Client Name *")
