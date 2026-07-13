@@ -46,6 +46,7 @@ st.markdown("""
         text-align: center;
         margin-top: 40px;
         border: 1px solid #E6B0AA;
+        font-size: 1.1rem;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -163,10 +164,8 @@ elif page == "About & Confidentiality":
 elif page == "🔒 Practice Dashboard":
     st.markdown("## 🔒 Internal Practice Administration Dashboard")
     
-    # Secure Password Input Barrier
     password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log", type="password")
     
-    # YOUR PRIVATE SECURE PASSWORD IS SET HERE (Currently: tumaini365)
     if password_input == "tumaini365":
         st.success("Access Granted.")
         st.write("Intake records below are safely preserved in the file system across sessions.")
@@ -194,9 +193,9 @@ elif page == "🔒 Practice Dashboard":
     elif password_input != "":
         st.error("Incorrect Administration Password. Access Denied.")
 
-# 8. Critical Emergency Clinical Notice Block
+# 8. Critical Emergency Clinical Notice Block (Updated with your custom contacts)
 st.markdown("""
     <div class="emergency-banner">
-        🚨 EMERGENCY NOTICE: If you are experiencing a severe mental health crisis or immediate self-harm emergency, please contact your local community public health authorities or national helplines instantly. We do not operate a 24/7 emergency dispatch response desk.
+        🚨 EMERGENCY NOTICE: If you are experiencing a severe mental health crisis, urgent trauma, or immediate risk of self-harm, please contact our emergency response crisis lines instantly at 📞 <b>0720 545 788</b> or 📞 <b>0754 828 766</b>, or reach out to your nearest community public health hospital.
     </div>
 """, unsafe_allow_html=True)
