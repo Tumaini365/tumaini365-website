@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # 1. Page Configuration & Brand Styling
 st.set_page_config(
@@ -63,7 +63,7 @@ if page == "Home":
     with c3:
         st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
 
-# 5. PAGE VIEW: BOOK AN APPOINTMENT (With Integrated Interactive Calendar/Slots)
+# 5. PAGE VIEW: BOOK AN APPOINTMENT
 elif page == "Book an Appointment":
     st.markdown("## 📆 Secure Booking Engine")
     st.write("Please select your consultation details below to request your intake session.")
@@ -73,10 +73,7 @@ elif page == "Book an Appointment":
         client_mobile = st.text_input("Mobile Contact Number *", placeholder="e.g., 0722 000 000")
         session_format = st.selectbox("Preferred Session Format *", ["Virtual (Secure Video Link)", "Face-to-Face (In-Person Office)"])
         
-        # Interactive Date Calendar Picker (Starts from today)
         selected_date = st.date_input("Select Appointment Date *", min_value=datetime.today())
-        
-        # Interactive Time Slot Selectbox Dropdown
         selected_time = st.selectbox("Select Preferred Time Slot *", [
             "08:00 AM - 09:00 AM",
             "09:30 AM - 10:30 AM",
@@ -92,9 +89,7 @@ elif page == "Book an Appointment":
             if not client_name or not client_email or not client_mobile or not consent:
                 st.error("Please fill out all required fields marked with an asterisk (*).")
             else:
-                # Merge date and time elements into a single clean readable string layout
                 formatted_datetime = f"{selected_date.strftime('%A, %B %d, %Y')} @ {selected_time}"
-                
                 new_booking = {
                     "Submission Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "Client Name": client_name,
@@ -125,9 +120,15 @@ elif page == "About & Confidentiality":
     st.markdown("## Operational Ethics & Trust Matrix")
     st.markdown("<div class='card-box'><p>At <b>Tumaini Three Sixty Five Limited</b>, we process clinical confidentiality protocols as our highest priority structure. Whether you interface with our practicing counseling psychologists online via video endpoints or directly at our physical rooms, your file notes, treatment strategies, and discussions are protected under medical record custody provisions.</p></div>", unsafe_allow_html=True)
 
-# 8. PRIVATE DASHBOARD PAGE
+# 8. PRIVATE DASHBOARD PAGE (Fixed Indentation Formatting)
 elif page == "🔒 Practice Dashboard":
     st.markdown("## 🔒 Internal Practice Administration Dashboard")
     password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log", type="password")
     
     if password_input == "tumaini365":
+        st.success("Access Granted.")
+        if len(current_bookings) == 0:
+            st.info("No appointment requests have been logged yet.")
+        else:
+            df = pd.DataFrame(current_bookings)
+            st.dataframe(df, use_container_width=True)
