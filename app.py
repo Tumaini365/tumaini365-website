@@ -10,7 +10,68 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. FILE DATABASE SETUP (Permanent File Storage Solution)
+# 2. RESTORING BRAND COLOR CODES (Sage Green, Earthy Sand, Slate Olive)
+st.markdown("""
+    <style>
+    /* Main Background & Base Typography colors */
+    .stApp { background-color: #F5EBE6 !important; } /* Soft Earthy Sand Background */
+    h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } /* Calming Sage Green Headers */
+    p, label, span { color: #333333 !important; }
+    
+    /* Top Navigation Tab Customizations */
+    .stTabs [data-baseweb="tab-list"] { gap: 10px; }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #FFFFFF;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border-top: 3px solid #6B8E23; /* Slate Olive Anchor */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    /* Brand Component Visual Blocks */
+    .hero-box {
+        background-color: #4A7C59; /* Deep Sage Banner background */
+        padding: 45px;
+        border-radius: 16px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .hero-box h1 { color: #FFFFFF !important; }
+    .hero-box p { color: #F5EBE6 !important; }
+    
+    .card-box {
+        background-color: #FFFFFF;
+        padding: 25px;
+        border-radius: 12px;
+        border-top: 6px solid #6B8E23; /* Slate Olive Top Accent */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+        margin-bottom: 20px;
+    }
+    
+    .blog-article {
+        background-color: #FFFFFF;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        margin-bottom: 25px;
+        border-left: 4px solid #4A7C59;
+    }
+    
+    .custom-emergency-banner {
+        background-color: #FADBD8;
+        color: #78281F !important;
+        padding: 18px;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 40px;
+        border: 1px solid #E6B0AA;
+        font-size: 1.1rem;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 3. FILE DATABASE SETUP (Permanent File Storage Solution)
 DB_FILE = "bookings.csv"
 
 def load_permanent_bookings():
@@ -43,12 +104,11 @@ def update_assessment_data(client_email, assessment_status):
 
 current_bookings = load_permanent_bookings()
 
-# 3. Static Practice Title Branding Header
+# 4. Static Title Branding Header
 st.title("🌱 Tumaini Three Sixty Five Limited")
 st.caption("Professional Counselling Psychology Practice")
 
-# 4. HORIZONTAL BUTTON TABS NAVIGATION
-# This generates clean horizontal buttons across the top of your layout matrix
+# 5. HORIZONTAL BUTTON TABS NAVIGATION
 tab_home, tab_book, tab_screen, tab_blog, tab_about, tab_dash = st.tabs([
     "🏠 Home", 
     "📆 Book an Appointment", 
@@ -58,33 +118,37 @@ tab_home, tab_book, tab_screen, tab_blog, tab_about, tab_dash = st.tabs([
     "🔒 Practice Dashboard"
 ])
 
-# 5. BUTTON TAB CONTENT BLOCKS
+# 6. TAB CONTENT LAYOUT BLOCKS
 
 # TAB VIEW: HOME
 with tab_home:
-    st.header("A Safe Space to Heal, Grow, and Thrive 365 Days a Year")
-    st.write("Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.")
+    st.markdown("""
+        <div class="hero-box">
+            <h1>A Safe Space to Heal, Grow, and Thrive 365 Days a Year</h1>
+            <p style="font-size:1.25rem;">Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.</p>
+        </div>
+    """, unsafe_allow_html=True)
     
-    st.subheader("Our Therapeutic Formats")
+    st.markdown("## Our Therapeutic Formats")
     col_v, col_f = st.columns(2)
     with col_v:
-        st.info("🌐 **Virtual Telehealth Sessions:** Secure, fully encrypted video sessions accessible from the total privacy of your home or private workspace.")
+        st.markdown("<div class='card-box'><h3>🌐 Virtual Telehealth Sessions</h3><p>Secure, fully encrypted video sessions accessible from the total privacy of your home or private workspace.</p></div>", unsafe_allow_html=True)
     with col_f:
-        st.info("🏢 **Face-to-Face Sessions:** In-person clinical appointments hosted inside our quiet, warm, and highly discreet consulting offices.")
+        st.markdown("<div class='card-box'><h3>🏢 Face-to-Face Sessions</h3><p>In-person clinical appointments hosted inside our quiet, warm, and highly discreet consulting offices.</p></div>", unsafe_allow_html=True)
         
     st.divider()
-    st.subheader("Areas of Clinical Expertise")
+    st.markdown("## Areas of Clinical Expertise")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.success("**Individual Care:** Anxiety management, burnout recovery, depression therapy, and lifestyle adjustment transitions.")
+        st.markdown("<div class='card-box'><h4>Individual Care</h4><p>Anxiety management, burnout recovery, depression therapy, and lifestyle adjustment transitions.</p></div>", unsafe_allow_html=True)
     with c2:
-        st.success("**Relationship Care:** Couples counseling, family rebuilding frameworks, and healthy communication skills.")
+        st.markdown("<div class='card-box'><h4>Relationship Care</h4><p>Couples counseling, family rebuilding frameworks, and healthy communication skills.</p></div>", unsafe_allow_html=True)
     with c3:
-        st.success("**Corporate Wellness:** Workplace mental health design workshops, leadership trauma training, and staff care plans.")
+        st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
 
 # TAB VIEW: BOOK AN APPOINTMENT
 with tab_book:
-    st.subheader("📆 Secure Booking Engine")
+    st.markdown("## 📆 Secure Booking Engine")
     st.write("Please select your consultation details below to request your intake session.")
     with st.form("native_booking_form", clear_on_submit=True):
         client_name = st.text_input("Full Client Name *")
@@ -119,7 +183,7 @@ with tab_book:
 
 # TAB VIEW: ONLINE MENTAL HEALTH ASSESSMENT (GAD-7)
 with tab_screen:
-    st.subheader("📊 Baseline Anxiety Assessment (GAD-7)")
+    st.markdown("## 📊 Baseline Anxiety Assessment (GAD-7)")
     st.write("Over the last 2 weeks, how often have you been bothered by the following problems?")
     
     v_email = st.text_input("Enter the exact Email Address used during booking to match your profile*")
@@ -156,42 +220,9 @@ with tab_screen:
             else:
                 st.warning("Assessment complete, but we could not trace a matching booking for this specific email address.")
 
-# TAB VIEW: WELLNESS INSIGHTS (BLOG SECTION)
+# TAB VIEW: WELLNESS INSIGHTS
 with tab_blog:
-    st.subheader("📖 Wellness Insights & Psychological Advice")
+    st.markdown("## 📖 Wellness Insights & Psychological Advice")
     st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
     st.divider()
     
-    st.markdown("### 1. Navigating Workplace Burnout")
-    st.write("Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today's corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.")
-    
-    st.markdown("### 2. Grounding Techniques for Managing Acute Anxiety")
-    st.write("Anxiety pulls our attention into terrifying projections of the future. When acute anxiety or a panic episode strikes, physical grounding exercises work rapidly to signal safety directly to your brain's emotional center.")
-    
-    st.markdown("### 3. Building Emotional Resilience in Relationships")
-    st.write("Healthy relationships are not defined by the absolute absence of conflict, but rather by the presence of a strong emotional recovery system.")
-
-# TAB VIEW: ABOUT & CONFIDENTIALITY
-with tab_about:
-    st.subheader("Operational Ethics & Trust Matrix")
-    st.write("At Tumaini Three Sixty Five Limited, we process clinical confidentiality protocols as our highest priority structure. Whether you interface with our practicing counseling psychologists online via video endpoints or directly at our physical rooms, your file notes, treatment strategies, and discussions are protected under medical record custody provisions.")
-
-# TAB VIEW: PRIVATE ADMIN DASHBOARD
-with tab_dash:
-    st.subheader("🔒 Internal Practice Administration Dashboard")
-    password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log:", type="password")
-    
-    if password_input == "tumaini365":
-        st.success("Access Granted.")
-        fresh_data = load_permanent_bookings()
-        if len(fresh_data) == 0:
-            st.info("No appointment requests have been logged yet.")
-        else:
-            st.write("### Permanent Appointment Log")
-            df = pd.DataFrame(fresh_data)
-            st.dataframe(df, use_container_width=True)
-            
-            csv_data = df.to_csv(index=False).encode('utf-8')
-            st.download_button(label="Download Log as Excel Spreadsheet", data=csv_data, file_name="tumaini365_bookings.csv", mime="text/csv")
-            
-            st.divider()
