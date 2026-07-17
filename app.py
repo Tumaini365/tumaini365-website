@@ -197,18 +197,12 @@ elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
             st.balloon()
             st.success(f"Thank you, {parent_name}! The holiday reservation request for {student_name} has been securely received.")
 
-# 📚 RESOURCES & TOPICS
+# 📚 RESOURCES & TOPICS (Re-coded with single line blocks to bypass triple-quote cache errors)
 elif app_page == "📚 Resources & Topics" and not show_dashboard:
     st.markdown("<h1 class='main-title'>THERAPEUTIC RESOURCES & INSIGHTS</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Clinical Perspectives on Adolescent Dynamics During School Breaks</div>", unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class='article-box'>
-        <div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div>
-        <p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p>
-    </div>
-    <div class='article-box'>
-        <div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div>
-        <p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom. High schoolers can fall trapped into endless dopamine loops driven by social media algorithms, leading to sleep disruption, poor emotional regulation, and body image anxiety. Helping teens step into digital wellness doesn't mean forced isolation; it involves establishing conscious tech boundaries and shifting from passive consumption to creative real-world engagement.</p>
-    </div>
-    <div class='article-box'>
+    # Render Article 1
+    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div><p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p></div>", unsafe_allow_html=True)
+    
+    # Render Article 2
