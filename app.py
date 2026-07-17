@@ -8,12 +8,16 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Unified Custom CSS Styling (Tumaini 365 Branding: Purple, Black, White)
+# Initialize a secure session state list to store active patient bookings locally
+if "clinical_bookings_db" not in st.session_state:
+    st.session_state.clinical_bookings_db = []
+
+# 2. Complete Corporate UI Styling (Tumaini 365: Dark Purple, Deep Amethyst, and Rich Charcoal)
 st.markdown("""
     <style>
     .main-title {
-        color: #7B2CBF;
-        font-size: 34px;
+        color: #5A189A;
+        font-size: 36px;
         font-weight: bold;
         text-align: center;
         margin-bottom: 5px;
@@ -28,7 +32,7 @@ st.markdown("""
     .target-badge {
         background-color: #F0E6FF;
         color: #5A189A;
-        padding: 8px 15px;
+        padding: 10px 18px;
         border-radius: 20px;
         font-weight: bold;
         text-align: center;
@@ -40,43 +44,63 @@ st.markdown("""
     .week-card {
         background-color: #FAF7FF;
         border-left: 5px solid #7B2CBF;
-        padding: 15px;
-        border-radius: 5px;
+        padding: 18px;
+        border-radius: 8px;
         margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     .week-title {
-        color: #5A189A;
+        color: #3C096C;
         font-weight: bold;
         font-size: 18px;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
     }
     .feature-header {
-        color: #7B2CBF;
-        font-size: 22px;
+        color: #5A189A;
+        font-size: 24px;
         font-weight: bold;
-        margin-top: 25px;
+        margin-top: 30px;
         border-bottom: 2px solid #E0AAFF;
-        padding-bottom: 5px;
-        margin-bottom: 15px;
+        padding-bottom: 6px;
+        margin-bottom: 18px;
+    }
+    .article-box {
+        background-color: #FFFFFF;
+        border: 1px solid #E0AAFF;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .article-title {
+        color: #7B2CBF;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
     .footer-text {
         text-align: center;
-        color: #666666;
+        color: #7B2CBF;
         font-size: 13px;
-        margin-top: 20px;
+        margin-top: 25px;
+        font-weight: 500;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 3. Sidebar Navigation Menu Controls
+# 3. Sidebar Navigation Structure
 st.sidebar.markdown("## 🌐 Portal Navigation")
 app_page = st.sidebar.radio(
     "Go To:",
     ["🏠 Home Page", "📅 August Holiday Teen Hub", "📚 Resources & Topics", "📞 Contact & Support"]
 )
 
-# 📝 COHORT A: HOME PAGE FRAMEWORK
-if app_page == "🏠 Home Page":
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 🔒 Clinical Administration")
+# Secure administrative toggle to view live intake sheets privately
+show_dashboard = st.sidebar.checkbox("👁️ Open Clinical Window")
+
+# 📝 COHORT A: HOME PAGE (Corporate Color Integration)
+if app_page == "🏠 Home Page" and not show_dashboard:
     st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_allow_html=True)
     
@@ -89,22 +113,18 @@ if app_page == "🏠 Home Page":
 
     st.warning("🚀 **Now Enrolling**: The August Holiday Teen Mental Health Hub is active! Use the sidebar navigation menu to book a secure session for your teenager today.")
 
-# 📝 COHORT B: NEW AUGUST TEEN HUB FORMATION WITH TIMELINE LOGIC
-elif app_page == "📅 August Holiday Teen Hub":
+# 📝 COHORT B: AUGUST TEEN HUB FORMATION WITH TIMELINE LOGIC
+elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
     st.markdown("<h1 class='main-title'>AUGUST HOLIDAY MENTAL HEALTH HUB</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Safe Space to Unwind, Recharge, & Connect</div>", unsafe_allow_html=True)
     st.markdown("<div class='target-badge'>📍 HIGH SCHOOL SEGMENT: FORM 3, FORM 4 & GRADE 9, GRADE 10</div>", unsafe_allow_html=True)
 
-    # Program Logistics Indicators
     col1, col2 = st.columns(2)
     with col1:
         st.info("📅 **TIMELINE**\n\nAugust 3rd – August 29th, 2026")
     with col2:
         st.success("💻 **DELIVERY**\n\n100% Online via Google Meet")
 
-    st.markdown("⚠️ *Strictly limited slots to preserve clinical confidentiality, emotional safety, and group impact.*")
-
-    # The 4 Focus Topics
     st.markdown("<div class='feature-header'>📅 August Weekly Theme Breakdown</div>", unsafe_allow_html=True)
     st.markdown("""
     <div class='week-card'>
@@ -125,7 +145,6 @@ elif app_page == "📅 August Holiday Teen Hub":
     </div>
     """, unsafe_allow_html=True)
 
-    # Dynamic Selection & Intake Form
     st.markdown("<div class='feature-header'>🔒 Dynamic Session Booking Form</div>", unsafe_allow_html=True)
 
     with st.form("booking_form", clear_on_submit=True):
@@ -153,45 +172,49 @@ elif app_page == "📅 August Holiday Teen Hub":
         session_type = st.radio(
             "Preferred Therapy Setup for your selected week(s):",
             (
-                "Group Therapy Support Sessions (Peer connection, shared experiences, collaborative resilience)",
-                "Individualized 1-on-1 Counseling Sessions (Deeply personalized, target-focused clinical attention)"
+                "Group Therapy Support Sessions (Peer connection, shared experiences)",
+                "Individualized 1-on-1 Counseling Sessions (Deeply personalized clinical focus)"
             )
         )
         
         additional_notes = st.text_area("Are there any specific behaviors or challenges you want the counselor to note? (Optional)")
-        
         submit_button = st.form_submit_button("Submit Secure Booking Request 🚀")
 
-    # Intake Submission Validation Block
     if submit_button:
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
-            st.error("Please fill in all mandatory fields (Name, Academic Level, Selected Weeks, and Phone) to process your booking.")
+            st.error("Please fill in all mandatory fields to process your booking.")
         else:
+            # Construct booking dictionary object
+            new_entry = {
+                "Student": student_name,
+                "Parent": parent_name,
+                "Level": class_level,
+                "Phone": parent_phone,
+                "Email": parent_email if parent_email else "N/A",
+                "Weeks": ", ".join(target_weeks),
+                "Type": session_type,
+                "Notes": additional_notes if additional_notes else "None"
+            }
+            # Append programmatically straight to the active clinical log database
+            st.session_state.clinical_bookings_db.append(new_entry)
+            
             st.balloon()
             st.success(f"Thank you, {parent_name}! The holiday reservation request for {student_name} has been securely received.")
-            
-            st.markdown("### 📋 Booking Summary Saved:")
-            st.write(f"• **Setup**: {session_type}")
-            st.write(f"• **Selected Focus Periods**:")
-            for week in target_weeks:
-                st.write(f"  → {week}")
-                
-            st.info("📩 **What Happens Next:** Our intake desk will review your selections. You will receive an official confirmation message outlining the session timetable along with your secure, private Google Meet access links via WhatsApp within 24 hours.")
 
-# 📝 COHORT C: TOPICS & THERAPEUTIC RESOURCES
-elif app_page == "📚 Resources & Topics":
-    st.markdown("<div class='feature-header'>📚 Mental Wellness Resources</div>", unsafe_allow_html=True)
-    st.write("Explore general mental fitness articles, reading lists, and mental health tools curated specifically for families, young adults, and corporate systems in Kenya.")
-    st.info("💡 *Full articles library and interactive mental wellness downloads coming soon!*")
-
-# 📝 COHORT D: GENERAL OFFICE INFRASTRUCTURE CONTACT
-elif app_page == "📞 Contact & Support":
-    st.markdown("<div class='feature-header'>📞 Reach Out to Us Directly</div>", unsafe_allow_html=True)
-    st.write("Need general counseling, corporate consulting, or family workshops?")
-    st.write("📱 **Phone Support:** 0720545788 / 0754828766")
-    st.write("📧 **Email Address:** support@tumaini365.org")
-
-# 4. Global Structural Footer Elements
-st.write("---")
-st.markdown("<div class='footer-text'>🛡️ <b>TUMAINI 365</b> — Your Hope Everyday.</div>", unsafe_allow_html=True)
-st.markdown("<div class='footer-text'>Professional Psychological, Mental Wellness & Training Consultancy Services.</div>", unsafe_allow_html=True)
+# 📝 COHORT C: RESOURCES & TOPICS (Full Counseling Articles Built In)
+elif app_page == "📚 Resources & Topics" and not show_dashboard:
+    st.markdown("<h1 class='main-title'>THERAPEUTIC RESOURCES & INSIGHTS</h1>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Clinical Perspectives on Adolescent Dynamics During School Breaks</div>", unsafe_allow_html=True)
+    
+    # Article 1
+    st.markdown("""
+    <div class='article-box'>
+        <div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div>
+        <p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Article 2
+    st.markdown("""
+    <div class='article-box'>
+        <div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div>
