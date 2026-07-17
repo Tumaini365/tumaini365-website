@@ -106,7 +106,7 @@ elif app_page == "📅 August Holiday Teen Hub":
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             weeks_str = ", ".join(target_weeks)
             
-            # Pack payload layout mapping
+            # Formulate full entry parameters
             payload = {
                 "Timestamp": timestamp,
                 "Student_Name": student_name,
@@ -120,7 +120,7 @@ elif app_page == "📅 August Holiday Teen Hub":
             }
             
             try:
-                # Force python to maintain the data payload across Google's security redirects
+                # Retain structural variables across security routing protocols
                 headers = {'Content-Type': 'application/json'}
                 response = requests.post(
                     WEBHOOK_URL, 
