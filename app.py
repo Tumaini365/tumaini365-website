@@ -1,134 +1,198 @@
 import streamlit as st
-import pandas as pd
-import os
-from datetime import datetime
 
-# 1. Page Configuration & Brand Styling
+# 1. Global Page Configuration
 st.set_page_config(
-    page_title="Tumaini 365 | Counselling Psychology",
-    page_icon="🌱",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    page_title="Tumaini 365 | Your Hope Everyday",
+    page_icon="🧠",
+    layout="centered",
+    initial_sidebar_state="expanded"
 )
 
-# Injecting CSS layout rules using clean single strings
-st.markdown("<style>.stApp { background-color: #F5EBE6; } h1, h2, h3, h4 { color: #4A7C59 !important; font-family: 'Georgia', serif; } p, label, span { color: #333333 !important; } .hero-box { background-color: #4A7C59; padding: 45px; border-radius: 16px; text-align: center; margin-bottom: 30px; } .hero-box h1 { color: #FFFFFF !important; } .hero-box p { color: #F5EBE6 !important; } .card-box { background-color: #FFFFFF; padding: 25px; border-radius: 12px; border-top: 6px solid #6B8E23; box-shadow: 0 5px 15px rgba(0,0,0,0.04); margin-bottom: 20px; } .blog-article { background-color: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); margin-bottom: 25px; border-left: 4px solid #4A7C59; } .emergency-banner { background-color: #FADBD8; color: #78281F !important; padding: 18px; border-radius: 8px; font-weight: bold; text-align: center; margin-top: 40px; border: 1px solid #E6B0AA; font-size: 1.1rem; }</style>", unsafe_allow_html=True)
+# 2. Unified Custom CSS Styling (Tumaini 365 Branding: Purple, Black, White)
+st.markdown("""
+    <style>
+    .main-title {
+        color: #7B2CBF;
+        font-size: 34px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    .sub-title {
+        color: #240046;
+        font-size: 20px;
+        text-align: center;
+        font-weight: 500;
+        margin-bottom: 25px;
+    }
+    .target-badge {
+        background-color: #F0E6FF;
+        color: #5A189A;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        text-align: center;
+        margin: 15px auto;
+        display: block;
+        width: fit-content;
+        border: 1px solid #D8BBFF;
+    }
+    .week-card {
+        background-color: #FAF7FF;
+        border-left: 5px solid #7B2CBF;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    .week-title {
+        color: #5A189A;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    .feature-header {
+        color: #7B2CBF;
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 25px;
+        border-bottom: 2px solid #E0AAFF;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+    .footer-text {
+        text-align: center;
+        color: #666666;
+        font-size: 13px;
+        margin-top: 20px;
+    }
+    </style>
+""", unsafe_style_html=True)
 
-# 2. FILE DATABASE SETUP (Permanent File Storage Solution)
-DB_FILE = "bookings.csv"
+# 3. Sidebar Navigation Menu Controls
+st.sidebar.image("https://placeholder.com", caption="TUMAINI 365") # Replace with your direct logo image URL if available
+st.sidebar.markdown("## 🌐 Portal Navigation")
+app_page = st.sidebar.radio(
+    "Go To:",
+    ["🏠 Home Page", "📅 August Holiday Teen Hub", "📚 Resources & Topics", "📞 Contact & Support"]
+)
 
-def load_permanent_bookings():
-    if os.path.exists(DB_FILE):
-        try:
-            return pd.read_csv(DB_FILE).to_dict(orient="records")
-        except Exception:
-            return []
-    return []
+# 📝 COHORT A: HOME PAGE FRAMEWORK
+if app_page == "🏠 Home Page":
+    st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_style_html=True)
+    st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_style_html=True)
+    
+    st.write("Welcome to Tumaini 365. We offer professional psychological, mental wellness, and training consultancy ecosystems designed to help individuals, families, and high school learners connect with their true potential and find lasting transformation.")
+    
+    st.markdown("<div class='feature-header'>🎯 Our Core Focus Areas</div>", unsafe_style_html=True)
+    st.write("• **Adolescent & Youth Counseling**: Navigating identity, social pressure, and emotional growth.")
+    st.write("• **Family & Couples Therapy**: Restoring communication pathways and structural dynamics.")
+    st.write("• **Institutional Training Modules**: Delivering targeted wellness frameworks for schools and communities.")
 
-def save_permanent_booking(booking_entry):
-    bookings = load_permanent_bookings()
-    bookings.append(booking_entry)
-    df = pd.DataFrame(bookings)
-    df.to_csv(DB_FILE, index=False)
+    st.warning("🚀 **Now Enrolling**: The August Holiday Teen Mental Health Hub is active! Use the sidebar navigation menu to book a secure session for your teenager today.")
 
-current_bookings = load_permanent_bookings()
+# 📝 COHORT B: NEW AUGUST TEEN HUB FORMATION WITH TIMELINE LOGIC
+elif app_page == "📅 August Holiday Teen Hub":
+    st.markdown("<h1 class='main-title'>AUGUST HOLIDAY MENTAL HEALTH HUB</h1>", unsafe_style_html=True)
+    st.markdown("<div class='sub-title'>Your Safe Space to Unwind, Recharge, & Connect</div>", unsafe_style_html=True)
+    st.markdown("<div class='target-badge'>📍 HIGH SCHOOL SEGMENT: FORM 3, FORM 4 & GRADE 9, GRADE 10</div>", unsafe_style_html=True)
 
-# 3. Navigation Header Matrix
-col_logo, col_nav = st.columns(2)
-with col_logo:
-    st.markdown("### 🌱 **Tumaini Three Sixty Five Limited**")
-    st.caption("Professional Counselling Psychology Practice")
+    # Program Logistics Indicators
+    col1, col2 = st.columns(2)
+    with col1:
+        st.info("📅 **TIMELINE**\n\nAugust 3rd – August 29th, 2026")
+    with col2:
+        st.success("💻 **DELIVERY**\n\n100% Online via Google Meet")
 
-with col_nav:
-    page = st.radio("", ["Home", "Book an Appointment", "Wellness Insights", "About & Confidentiality", "🔒 Practice Dashboard"], horizontal=True, label_visibility="collapsed")
+    st.markdown("⚠️ *Strictly limited slots to preserve clinical confidentiality, emotional safety, and group impact.*")
 
-st.divider()
+    # The 4 Focus Topics
+    st.markdown("<div class='feature-header'>📅 August Weekly Theme Breakdown</div>", unsafe_style_html=True)
+    st.markdown("""
+    <div class='week-card'>
+        <div class='week-title'>🗓️ WEEK 1 (Aug 3 – Aug 9): Dealing with Social Pressures & Peer Challenges</div>
+        Real, unscripted focus on navigating peer pressure, anxiety, identity transitions, and building an internal anchor of self-esteem.
+    </div>
+    <div class='week-card'>
+        <div class='week-title'>🗓️ WEEK 2 (Aug 10 – Aug 16): Self-Esteem & Body Image in a Digital Age</div>
+        Hacking toxic algorithmic scrolling loops. Replacing escape habits with routine-building and healthy tech-life boundaries.
+    </div>
+    <div class='week-card'>
+        <div class='week-title'>🗓️ WEEK 3 (Aug 17 – Aug 23): Managing Family Expectations & Holiday Stresses</div>
+        Decompressing from heavy Term 2 academic strain, cognitive recovery, and building strategic mental stamina for the upcoming term.
+    </div>
+    <div class='week-card'>
+        <div class='week-title'>🗓️ WEEK 4 (Aug 24 – Aug 29): Planning for the Future: Post-Holiday Motivation & Goals</div>
+        Practical mastery of toxic peer defense, conflict resolution, emotional self-regulation, and life goals planning.
+    </div>
+    """, unsafe_style_html=True)
 
-# 4. PAGE VIEW: HOME
-if page == "Home":
-    st.markdown("<div class='hero-box'><h1>A Safe Space to Heal, Grow, and Thrive 365 Days a Year</h1><p style='font-size:1.25rem;'>Confidential and empathetic counselling psychology tailored for individuals, couples, and corporate institutions.</p></div>", unsafe_allow_html=True)
-    st.markdown("## Our Therapeutic Formats")
-    col_v, col_f = st.columns(2)
-    with col_v:
-        st.markdown("<div class='card-box'><h3>🌐 Virtual Telehealth Sessions</h3><p>Secure, fully encrypted video sessions accessible from the total privacy of your home or private workspace.</p></div>", unsafe_allow_html=True)
-    with col_f:
-        st.markdown("<div class='card-box'><h3>🏢 Face-to-Face Sessions</h3><p>In-person clinical appointments hosted inside our quiet, warm, and highly discreet consulting offices.</p></div>", unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("## Areas of Clinical Expertise")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown("<div class='card-box'><h4>Individual Care</h4><p>Anxiety management, burnout recovery, depression therapy, and lifestyle adjustment transitions.</p></div>", unsafe_allow_html=True)
-    with c2:
-        st.markdown("<div class='card-box'><h4>Relationship Care</h4><p>Couples counseling, family rebuilding frameworks, and healthy communication skills.</p></div>", unsafe_allow_html=True)
-    with c3:
-        st.markdown("<div class='card-box'><h4>Corporate Wellness</h4><p>Workplace mental health design workshops, leadership trauma training, and staff care plans.</p></div>", unsafe_allow_html=True)
+    # Dynamic Selection & Intake Form
+    st.markdown("<div class='feature-header'>🔒 Dynamic Session Booking Form</div>", unsafe_style_html=True)
 
-# 5. PAGE VIEW: BOOK AN APPOINTMENT
-elif page == "Book an Appointment":
-    st.markdown("## 📆 Secure Booking Engine")
-    st.write("Please select your consultation details below to request your intake session.")
-    with st.form("native_booking_form", clear_on_submit=True):
-        client_name = st.text_input("Full Client Name *")
-        client_email = st.text_input("Your Secure Email Address *")
-        client_mobile = st.text_input("Mobile Contact Number *", placeholder="e.g., 0722 000 000")
-        session_format = st.selectbox("Preferred Session Format *", ["Virtual (Secure Video Link)", "Face-to-Face (In-Person Office)"])
+    with st.form("booking_form", clear_on_submit=True):
+        student_name = st.text_input("Student's Full Name:")
+        parent_name = st.text_input("Parent / Guardian Full Name:")
         
-        selected_date = st.date_input("Select Appointment Date *", min_value=datetime.today())
-        selected_time = st.selectbox("Select Preferred Time Slot *", [
-            "08:00 AM - 09:00 AM",
-            "09:30 AM - 10:30 AM",
-            "11:00 AM - 12:00 PM",
-            "02:00 PM - 03:00 PM",
-            "03:30 PM - 04:30 PM",
-            "05:00 PM - 06:00 PM"
-        ])
+        class_level = st.selectbox(
+            "Current Academic Level:",
+            ["Select Class level...", "Grade 9", "Grade 10", "Form 3", "Form 4"]
+        )
         
-        consent = st.checkbox("I confirm I am requesting a confidential clinical intake appointment.*")
-        submit_button = st.form_submit_button("Submit Secure Request")
-        if submit_button:
-            if not client_name or not client_email or not client_mobile or not consent:
-                st.error("Please fill out all required fields marked with an asterisk (*).")
-            else:
-                formatted_datetime = f"{selected_date.strftime('%A, %B %d, %Y')} @ {selected_time}"
-                new_booking = {
-                    "Submission Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                    "Client Name": client_name,
-                    "Client Email": client_email,
-                    "Mobile Contact": client_mobile,
-                    "Format": session_format,
-                    "Requested Date/Time": formatted_datetime
-                }
-                save_permanent_booking(new_booking)
-                st.success("🎉 Your appointment request has been securely locked into our system! Our clinical desk will reach out to you via email or mobile shortly.")
+        parent_phone = st.text_input("Parent's Contact Number (WhatsApp/Call):")
+        parent_email = st.text_input("Parent's Email Address:")
+        
+        target_weeks = st.multiselect(
+            "Select the Week(s) you wish to book sessions for:",
+            [
+                "Week 1: Social Pressures & Peer Challenges (Aug 3-9)",
+                "Week 2: Self-Esteem & Digital Age (Aug 10-16)",
+                "Week 3: Family Expectations & Holiday Stresses (Aug 17-23)",
+                "Week 4: Post-Holiday Motivation & Goals (Aug 24-29)"
+            ]
+        )
+        
+        session_type = st.radio(
+            "Preferred Therapy Setup for your selected week(s):",
+            (
+                "Group Therapy Support Sessions (Peer connection, shared experiences, collaborative resilience)",
+                "Individualized 1-on-1 Counseling Sessions (Deeply personalized, target-focused clinical attention)"
+            )
+        )
+        
+        additional_notes = st.text_area("Are there any specific behaviors or challenges you want the counselor to note? (Optional)")
+        
+        submit_button = st.form_submit_button("Submit Secure Booking Request 🚀")
 
-# 6. PAGE VIEW: WELLNESS INSIGHTS (BLOG SECTION)
-elif page == "Wellness Insights":
-    st.markdown("## 📖 Wellness Insights & Psychological Advice")
-    st.write("Explore evidence-based mental health articles curated by the clinical team at Tumaini 365.")
-    st.markdown("---")
-    
-    art_1 = '<div class="blog-article"><h3>1. Navigating Workplace Burnout</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Workplace burnout goes far beyond simple physical fatigue. It is a state of emotional, mental, and physical exhaustion caused by excessive and prolonged stress. In today corporate environments, burnout often flies under the radar until it severely impacts emotional regulation.</p><h4>Key Coping Strategies:</h4><ul><li><b>Establish Hard Boundaries:</b> Create strict disconnect times where corporate emails and work tasks are entirely unreachable.</li><li><b>Practice Micro-Breaks:</b> Use the 50-10 rule—work dynamically for 50 minutes, then completely step away for 10 minutes to reset your nervous system.</li><li><b>Speak to a Specialist:</b> Burnout changes cognitive processing; early professional therapy provides structural behavioral recovery frameworks.</li></ul></div>'
-    art_2 = '<div class="blog-article"><h3>2. Grounding Techniques for Managing Acute Anxiety</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Anxiety pulls our attention into terrifying projections of the future. When acute anxiety or a panic episode strikes, physical grounding exercises work rapidly to signal safety directly to your brain emotional center.</p><h4>The 5-4-3-2-1 Grounding Method:</h4><p>Slow your breathing down completely and actively identify these items in your room: Identify 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste. This shifts your nervous system out of survival mode.</p></div>'
-    art_3 = '<div class="blog-article"><h3>3. Building Emotional Resilience in Relationships</h3><p style="color: #666;"><i>Published by Tumaini 365 Clinical Desk</i></p><p>Healthy relationships are not defined by the absolute absence of conflict, but rather by the presence of a strong emotional recovery system. Couples who practice intentional communication preserve safety even during deep disagreements.</p><h4>Core Frameworks:</h4><ul><li><b>Shift to "I" Statements:</b> Replace accusatory phrases with empathetic ownership: "I feel disconnected when we don not catch up."</li><li><b>Validate Before Reacting:</b> Confirm clear comprehension: "What I hear you saying is that you feel overwhelmed."</li></ul></div>'
-    
-    st.markdown(art_1, unsafe_allow_html=True)
-    st.markdown(art_2, unsafe_allow_html=True)
-    st.markdown(art_3, unsafe_allow_html=True)
-
-# 7. PAGE VIEW: ABOUT & CONFIDENTIALITY
-elif page == "About & Confidentiality":
-    st.markdown("## Operational Ethics & Trust Matrix")
-    st.markdown("<div class='card-box'><p>At <b>Tumaini Three Sixty Five Limited</b>, we process clinical confidentiality protocols as our highest priority structure. Whether you interface with our practicing counseling psychologists online via video endpoints or directly at our physical rooms, your file notes, treatment strategies, and discussions are protected under medical record custody provisions.</p></div>", unsafe_allow_html=True)
-
-# 8. PRIVATE DASHBOARD PAGE (Fixed Indentation Formatting)
-elif page == "🔒 Practice Dashboard":
-    st.markdown("## 🔒 Internal Practice Administration Dashboard")
-    password_input = st.text_input("Enter Practice Admin Password to Unlock Client Log", type="password")
-    
-    if password_input == "tumaini365":
-        st.success("Access Granted.")
-        if len(current_bookings) == 0:
-            st.info("No appointment requests have been logged yet.")
+    # Intake Submission Validation Block
+    if submit_button:
+        if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
+            st.error("Please fill in all mandatory fields (Name, Academic Level, Selected Weeks, and Phone) to process your booking.")
         else:
-            df = pd.DataFrame(current_bookings)
-            st.dataframe(df, use_container_width=True)
+            st.balloon()
+            st.success(f"Thank you, {parent_name}! The holiday reservation request for {student_name} has been securely received.")
+            
+            st.markdown("### 📋 Booking Summary Saved:")
+            st.write(f"• **Setup**: {session_type}")
+            st.write(f"• **Selected Focus Periods**:")
+            for week in target_weeks:
+                st.write(f"  → {week}")
+                
+            st.info("📩 **What Happens Next:** Our intake desk will review your selections. You will receive an official confirmation message outlining the session timetable along with your secure, private Google Meet access links via WhatsApp within 24 hours.")
+
+# 📝 COHORT C: TOPICS & THERAPEUTIC RESOURCES
+elif app_page == "📚 Resources & Topics":
+    st.markdown("<div class='feature-header'>📚 Mental Wellness Resources</div>", unsafe_style_html=True)
+    st.write("Explore general mental fitness articles, reading lists, and mental health tools curated specifically for families, young adults, and corporate systems in Kenya.")
+    st.info("💡 *Full articles library and interactive mental wellness downloads coming soon!*")
+
+# 📝 COHORT D: GENERAL OFFICE INFRASTRUCTURE CONTACT
+elif app_page == "📞 Contact & Support":
+    st.markdown("<div class='feature-header'>📞 Reach Out to Us Directly</div>", unsafe_style_html=True)
+    st.write("Need general counseling, corporate consulting, or family workshops?")
+    st.write("📱 **Phone Support:** 0720545788 / 0754828766")
+    st.write("📧 **Email Address:** support@tumaini365.org")
+
+# 4. Global Structural Footer Elements
+st.write("---")
+st.markdown("<div class='footer-text'>🛡️ <b>TUMAINI 365</b> — Your Hope Everyday.</div>", unsafe_style_html=True)
+st.markdown("<div class='footer-text'>Professional Psychological, Mental Wellness & Training Consultancy Services.</div>", unsafe_style_html=True)
