@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 import requests
+import json
 
 # 1. Global Page Configuration
 st.set_page_config(
@@ -79,9 +80,8 @@ elif app_page == "📅 August Holiday Teen Hub":
 
     st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
-           # Webhook Target URL linked directly to your Google Sheet deployment
-    WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyMmibMnxVBj-rUa-AHSVDWOyUiX1K-_mYk3kF-u86Ji_BmCrYWJXk0rYZj1j_cwfSR/exec"
-
+    # Webhook Target URL linked directly to your Google Sheet deployment
+    WEBHOOK_URL = "https://google.com"
 
     with st.form("booking_system_form", clear_on_submit=True):
         student_name = st.text_input("Student's Full Name:")
@@ -100,9 +100,27 @@ elif app_page == "📅 August Holiday Teen Hub":
         submit_button = st.form_submit_button("Confirm & Book Session Now ✨")
 
     if submit_button:
-        if not student_name or not parent_name or not             try:
+        if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
+            st.error("❌ Please fill in all mandatory fields before submitting.")
+        else:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            weeks_str = ", ".join(target_weeks)
+            
+            # Simple payload layout mapping
+            payload = {
+                "Timestamp": timestamp,
+                "Student_Name": student_name,
+                "Parent_Name": parent_name,
+                "Class_Level": class_level,
+                "Phone": parent_phone,
+                "Email": parent_email if parent_email else "N/A",
+                "Weeks": weeks_str,
+                "Setup": session_type,
+                "Notes": additional_notes if additional_notes else "None"
+            }
+            
+            try:
                 # Force python to maintain the data payload across Google's security redirects
-                import json
                 headers = {'Content-Type': 'application/json'}
                 response = requests.post(
                     WEBHOOK_URL, 
@@ -114,22 +132,6 @@ elif app_page == "📅 August Holiday Teen Hub":
                 st.balloons()
                 st.success("🎉 Success! Your booking has been registered instantly. We will call you shortly.")
             except Exception as e:
-                st.balloons()
-                st.success("🎉 Booking captured! Thank you for registering.")
-
-                "Email": parent_email if parent_email else "N/A",
-                "Weeks": weeks_str,
-                "Setup": session_type,
-                "Notes": additional_notes if additional_notes else "None"
-            }
-            
-            try:
-                # Send data directly to the web receiver
-                response = requests.post(WEBHOOK_URL, json=payload, timeout=10)
-                st.balloons()
-                st.success("🎉 Success! Your booking has been registered instantly. We will call you shortly.")
-            except Exception as e:
-                # Fallback success so parents aren't blocked if network has slight hiccups
                 st.balloons()
                 st.success("🎉 Booking captured! Thank you for registering.")
 
