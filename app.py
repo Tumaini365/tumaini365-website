@@ -106,7 +106,7 @@ elif app_page == "📅 August Holiday Teen Hub":
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             weeks_str = ", ".join(target_weeks)
             
-            # Simple payload layout mapping
+            # Pack payload layout mapping
             payload = {
                 "Timestamp": timestamp,
                 "Student_Name": student_name,
