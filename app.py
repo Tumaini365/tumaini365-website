@@ -95,7 +95,6 @@ app_page = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.sidebar_description = ""
 st.sidebar.markdown("### 🔒 Clinical Administration")
 show_dashboard = st.sidebar.checkbox("👁️ Open Clinical Window")
 
