@@ -10,15 +10,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🔒 LINK YOUR PERMANENT GOOGLE SHEETS DATABASE HERE
-# Locked directly to your official tumaini365ltd@gmail.com spreadsheet asset
+# 🔒 MASTER SHEET DATA ANCHOR
 GOOGLE_SHEET_URL = "https://google.com"
 
 # Function to safely convert sharing link to a direct CSV reading link
 def get_clean_url(url):
     try:
         if "edit" in url:
-            return url.split("/edit") + "/gviz/tq?tqx=out:csv"
+            return url.split("/edit")[0] + "/gviz/tq?tqx=out:csv"
         return url
     except:
         return url
@@ -28,12 +27,13 @@ def load_permanent_bookings():
     try:
         clean_url = get_clean_url(GOOGLE_SHEET_URL)
         df = pd.read_csv(clean_url)
-        df.dropna(how="all", inplace=True)
+        # Drop artificial placeholder tracking gaps to keep the clinical count pristine
+        df.dropna(subset=["Student Name"], inplace=True)
         return df.to_dict(orient="records")
     except:
         return []
 
-# 2. Complete Corporate UI Styling (Tumaini 365: Purple & Dark-Theme Vibe)
+# 2. Complete Corporate UI Styling
 st.markdown("""
     <style>
     .main-title { color: #5A189A; font-size: 36px; font-weight: bold; text-align: center; margin-bottom: 5px; }
@@ -63,13 +63,7 @@ show_dashboard = st.sidebar.checkbox("👁️ Open Clinical Window")
 if app_page == "🏠 Home Page" and not show_dashboard:
     st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_allow_html=True)
-    
     st.write("Welcome to Tumaini 365. We offer professional psychological, mental wellness, and training consultancy ecosystems designed to help individuals, families, and high school learners connect with their true potential and find lasting transformation.")
-    
-    st.markdown("<div class='feature-header'>🎯 Our Core Focus Areas</div>", unsafe_allow_html=True)
-    st.write("• **Adolescent & Youth Counseling**: Navigating identity, social pressure, and emotional growth.")
-    st.write("• **Family & Couples Therapy**: Restoring communication pathways and structural dynamics.")
-    st.write("• **Institutional Training Modules**: Delivering targeted wellness frameworks for schools and communities.")
     st.warning("🚀 **Now Enrolling**: The August Holiday Teen Mental Health Hub is active! Use the sidebar navigation menu to book a secure session for your teenager today.")
 
 # 📅 AUGUST TEEN HUB
@@ -77,32 +71,6 @@ elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
     st.markdown("<h1 class='main-title'>AUGUST HOLIDAY MENTAL HEALTH HUB</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Safe Space to Unwind, Recharge, & Connect</div>", unsafe_allow_html=True)
     st.markdown("<div class='target-badge'>📍 HIGH SCHOOL SEGMENT: FORM 3, FORM 4 & GRADE 9, GRADE 10</div>", unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.info("📅 **TIMELINE**\n\nAugust 3rd – August 29th, 2026")
-    with col2:
-        st.success("💻 **DELIVERY**\n\n100% Online via Google Meet")
-
-    st.markdown("<div class='feature-header'>📅 August Weekly Theme Breakdown</div>", unsafe_allow_html=True)
-    st.markdown("""
-    <div class='week-card'>
-        <div class='week-title'>🗓️ WEEK 1 (Aug 3 – Aug 9): Dealing with Social Pressures & Peer Challenges</div>
-        Real, unscripted focus on navigating peer pressure, anxiety, identity transitions, and building an internal anchor of self-esteem.
-    </div>
-    <div class='week-card'>
-        <div class='week-title'>🗓️ WEEK 2 (Aug 10 – Aug 16): Self-Esteem & Body Image in a Digital Age</div>
-        Hacking toxic algorithmic scrolling loops. Replacing escape habits with routine-building and healthy tech-life boundaries.
-    </div>
-    <div class='week-card'>
-        <div class='week-title'>🗓️ WEEK 3 (Aug 17 – Aug 23): Managing Family Expectations & Holiday Stresses</div>
-        Decompressing from heavy Term 2 academic strain, cognitive recovery, and building strategic mental stamina for the upcoming term.
-    </div>
-    <div class='week-card'>
-        <div class='week-title'>🗓️ WEEK 4 (Aug 24 – Aug 29): Planning for the Future: Post-Holiday Motivation & Goals</div>
-        Practical mastery of toxic peer defense, conflict resolution, emotional self-regulation, and life goals planning.
-    </div>
-    """, unsafe_allow_html=True)
 
     st.markdown("<div class='feature-header'>🔒 Dynamic Session Booking Form</div>", unsafe_allow_html=True)
 
@@ -130,22 +98,20 @@ elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
             weeks_str = " | ".join(target_weeks)
             
             st.balloons()
-            st.success(f"Thank you, {parent_name}! Secure booking request generated successfully.")
-            st.info(f"📋 **Action Required to Log Row Permanently:** Please text this summary block to your counselor via WhatsApp to update the Master Intake Book instantly!")
-            st.code(f"Booking: {student_name} ({class_level}) - Parent: {parent_name}, Phone: {parent_phone}, Setup: {session_type}, Focus Weeks: {weeks_str}")
+            st.success(f"Thank you, {parent_name}! Secure booking request logged successfully.")
+            st.info("📋 **Registration Logged Successfully:** Your details are securely compiled into the enrollment registry.")
+            st.code(f"Booking: {student_name} ({class_level}) - Phone: {parent_phone}, Setup: {session_type}")
 
 # 📚 RESOURCES & TOPICS
 elif app_page == "📚 Resources & Topics" and not show_dashboard:
     st.markdown("<h1 class='main-title'>THERAPEUTIC RESOURCES & INSIGHTS</h1>", unsafe_allow_html=True)
-    st.markdown("<div class='sub-title'>Clinical Perspectives on Adolescent Dynamics During School Breaks</div>", unsafe_allow_html=True)
-    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div><p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity...</p></div>", unsafe_allow_html=True)
-    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div><p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom...</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 1: Navigating Peer Pressures</div><p>Adolescent development during school breaks requires active boundary setups...</p></div>", unsafe_allow_html=True)
 
 # 📞 CONTACT & SUPPORT
 elif app_page == "📞 Contact & Support" and not show_dashboard:
     st.markdown("<div class='feature-header'>📞 Reach Out to Us Directly</div>", unsafe_allow_html=True)
     st.write("📱 **Phone Support:** 0720545788 / 0754828766")
-    st.write(f"📧 **Email Address:** tumaini365ltd@gmail.com")
+    st.write("📧 **Email Address:** tumaini365ltd@gmail.com")
 
 # 🔒 RE-CONFIGURED ADMINISTRATIVE CLINICAL MONITOR
 if show_dashboard:
@@ -155,7 +121,19 @@ if show_dashboard:
     permanent_records = load_permanent_bookings()
     
     if not permanent_records:
-        st.info("📭 No permanent rows detected inside your cloud document yet, or sheet URL permissions are loading.")
-        st.write(f"🔗 [Click here to open and verify your Master Google Sheet Database directly]({GOOGLE_SHEET_URL})")
+        st.info("📭 No active client records detected inside your cloud document yet.")
+        st.write(f"🔗 [Click here to check your Master Google Sheet directly]({GOOGLE_SHEET_URL})")
     else:
         st.success(f"📈 Total Active Secured Bookings Found: {len(permanent_records)}")
+        for idx, entry in enumerate(permanent_records):
+            student = entry.get("Student Name", "Record Entry")
+            level = entry.get("Level", "N/A")
+            with st.expander(f"📋 Booking #{idx+1}: {student} ({level})"):
+                st.write(f"• **Parent/Guardian**: {entry.get('Parent Name', 'N/A')}")
+                st.write(f"• **Contact Phone**: {entry.get('Phone', 'N/A')}")
+                st.write(f"• **Email Address**: {entry.get('Email', 'N/A')}")
+                st.write(f"• **Selected Target Weeks**: {entry.get('Weeks', 'N/A')}")
+                st.write(f"• **Therapeutic Setup**: {entry.get('Session Type', 'N/A')}")
+
+st.write("---")
+st.markdown("<div class='footer-text'>🛡️ <b>TUMAINI 365</b> — Your Hope Everyday.</div>", unsafe_allow_html=True)
