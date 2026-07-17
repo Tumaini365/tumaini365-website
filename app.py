@@ -14,7 +14,7 @@ st.set_page_config(
 # Paste your Google Sheet sharing link between the quotation marks below:
 GOOGLE_SHEET_URL = "PASTE_YOUR_GOOGLE_SHEET_URL_HERE"
 
-# Function to safely convert sharing link to a direct CSV export/append link
+# Function to safely convert sharing link to a direct CSV export link
 def get_clean_url(url):
     try:
         if "edit" in url:
@@ -125,15 +125,12 @@ elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
             st.error("Please fill in all mandatory fields to process your booking.")
         else:
-            # Prepare data string formatting for direct spreadsheet intake
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             weeks_str = " | ".join(target_weeks)
-            notes_clean = additional_notes.replace(",", " ") if additional_notes else "None"
             
-            # Displays instructions for manual sheet submission fallback
             st.balloons()
             st.success(f"Thank you, {parent_name}! Secure booking request generated successfully.")
-            st.info(f"📋 **Action Required to Log Row Permanently:** Due to open cloud safety restrictions, please text this summary link or screenshot to your counselor via WhatsApp to log it immediately into the Master Intake Book!")
+            st.info(f"📋 **Action Required to Log Row Permanently:** Please text this summary block to your counselor via WhatsApp to update the Master Intake Book instantly!")
             st.code(f"Booking: {student_name} ({class_level}) - Parent: {parent_name}, Phone: {parent_phone}, Setup: {session_type}, Focus Weeks: {weeks_str}")
 
 # 📚 RESOURCES & TOPICS
@@ -149,12 +146,18 @@ elif app_page == "📞 Contact & Support" and not show_dashboard:
     st.write("📱 **Phone Support:** 0720545788 / 0754828766")
     st.write("📧 **Email Address:** support@tumaini365.org")
 
-# 🔒 RE-CONFIGURED ADMINISTRATIVE CLINICAL MONITOR (Pulls permanently from cloud sheet)
+# 🔒 RE-CONFIGURED ADMINISTRATIVE CLINICAL MONITOR
 if show_dashboard:
     st.markdown("<h1 class='main-title'>🔒 CLINICAL INTAKE MONITOR</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Tumaini 365 Cloud-Linked Master Database</div>", unsafe_allow_html=True)
     
-    # Load dynamic rows live from your Google Sheet link
     permanent_records = load_permanent_bookings()
     
     if not permanent_records:
+        st.info("📭 No permanent rows detected inside your cloud document yet, or sheet URL permissions are loading.")
+        st.write(f"🔗 [Click here to open and verify your Master Google Sheet Database directly]({GOOGLE_SHEET_URL})")
+    else:
+        st.success(f"📈 Total Active Secured Bookings Found: {len(permanent_records)}")
+        
+        for idx, entry in enumerate(permanent_records):
+            student = entry.get("Student Name", "Unknown Record")
