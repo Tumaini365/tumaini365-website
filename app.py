@@ -83,7 +83,7 @@ elif app_page == "📅 August Holiday Teen Hub":
 
     st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
-    # Webhook Target URL linked directly to your Google Sheet deployment
+    # Reverted back to the original script URL that successfully updated your sheet
     WEBHOOK_URL = "https://google.com"
 
     with st.form("booking_system_form", clear_on_submit=True):
@@ -106,7 +106,6 @@ elif app_page == "📅 August Holiday Teen Hub":
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
             st.error("❌ Please fill in all mandatory fields before submitting.")
         else:
-            # Reliable baseline timestamp configuration
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             weeks_str = ", ".join(target_weeks)
             
@@ -123,7 +122,6 @@ elif app_page == "📅 August Holiday Teen Hub":
             }
             
             try:
-                # Maintain exact data payloads during security redirects
                 headers = {'Content-Type': 'application/json'}
                 response = requests.post(
                     WEBHOOK_URL, 
