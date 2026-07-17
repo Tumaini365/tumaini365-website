@@ -11,8 +11,8 @@ st.set_page_config(
 )
 
 # 🔒 LINK YOUR PERMANENT GOOGLE SHEETS DATABASE HERE
-# Paste your tumaini365@gmail.com Google Sheet sharing link between the quotes below:
-GOOGLE_SHEET_URL = "PASTE_YOUR_GOOGLE_SHEET_URL_HERE"
+# Erase the placeholder text below and paste your real Google Sheet link between the quotes:
+GOOGLE_SHEET_URL = "PASTE_YOUR_ACTUAL_GOOGLE_SHEET_LINK_HERE"
 
 # Function to safely convert sharing link to a direct CSV reading link
 def get_clean_url(url):
@@ -28,13 +28,12 @@ def load_permanent_bookings():
     try:
         clean_url = get_clean_url(GOOGLE_SHEET_URL)
         df = pd.read_csv(clean_url)
-        # Clear any empty rows or formatting spaces
         df.dropna(how="all", inplace=True)
         return df.to_dict(orient="records")
     except:
         return []
 
-# 2. Complete Corporate UI Styling (Tumaini 365 Context)
+# 2. Complete Corporate UI Styling (Tumaini 365: Purple & Dark-Theme Vibe)
 st.markdown("""
     <style>
     .main-title { color: #5A189A; font-size: 36px; font-weight: bold; text-align: center; margin-bottom: 5px; }
@@ -146,9 +145,9 @@ elif app_page == "📚 Resources & Topics" and not show_dashboard:
 elif app_page == "📞 Contact & Support" and not show_dashboard:
     st.markdown("<div class='feature-header'>📞 Reach Out to Us Directly</div>", unsafe_allow_html=True)
     st.write("📱 **Phone Support:** 0720545788 / 0754828766")
-    st.write("📧 **Email Address:** support@tumaini365.org")
+    st.write(f"📧 **Email Address:** tumaini365ltd@gmail.com")
 
-# 🔒 RE-CONFIGURED ADMINISTRATIVE CLINICAL MONITOR (Reads securely from your Google Sheet)
+# 🔒 RE-CONFIGURED ADMINISTRATIVE CLINICAL MONITOR
 if show_dashboard:
     st.markdown("<h1 class='main-title'>🔒 CLINICAL INTAKE MONITOR</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Tumaini 365 Cloud-Linked Master Database</div>", unsafe_allow_html=True)
@@ -156,8 +155,7 @@ if show_dashboard:
     permanent_records = load_permanent_bookings()
     
     if not permanent_records:
-        st.info("📭 No rows detected inside your cloud document yet, or sheet URL is loading.")
+        st.info("📭 No permanent rows detected inside your cloud document yet, or sheet URL permissions are loading.")
         st.write(f"🔗 [Click here to open and verify your Master Google Sheet Database directly]({GOOGLE_SHEET_URL})")
     else:
         st.success(f"📈 Total Active Secured Bookings Found: {len(permanent_records)}")
-        
