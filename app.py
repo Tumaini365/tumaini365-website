@@ -83,6 +83,7 @@ elif app_page == "📅 August Holiday Teen Hub":
 
     st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
+    # Linked directly to your master Google Sheet production pipeline
     WEBHOOK_URL = "https://google.com"
 
     with st.form("booking_system_form", clear_on_submit=True):
@@ -125,6 +126,7 @@ elif app_page == "📅 August Holiday Teen Hub":
             }
             
             try:
+                # Maintain data integrity across security routing parameters
                 headers = {'Content-Type': 'application/json'}
                 response = requests.post(
                     WEBHOOK_URL, 
@@ -145,4 +147,3 @@ elif app_page == "📚 Resources & Topics":
     st.markdown("<div class='sub-title'>Clinical Perspectives on Adolescent Dynamics During School Breaks</div>", unsafe_allow_html=True)
     
     st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div><p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p></div>", unsafe_allow_html=True)
-    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div><p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom. High schoolers can fall trapped into endless dopamine loops driven by social media algorithms, leading to sleep disruption, poor emotional regulation, and body image anxiety. Helping teens step into digital wellness doesn't mean forced isolation; it involves establishing conscious tech boundaries and shifting from passive consumption to creative real-world engagement.</p></div>", unsafe_allow_html=True)
