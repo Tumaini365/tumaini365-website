@@ -11,8 +11,8 @@ st.set_page_config(
 )
 
 # 🔒 LINK YOUR PERMANENT GOOGLE SHEETS DATABASE HERE
-# Erase the placeholder text below and paste your real Google Sheet link between the quotes:
-GOOGLE_SHEET_URL = "PASTE_YOUR_ACTUAL_GOOGLE_SHEET_LINK_HERE"
+# This is now locked directly to your official tumaini365ltd@gmail.com spreadsheet asset
+GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1wTLvxTjyZE-Q5hHAkoQygNOz5QavSvmLar8QTt9-S_c/edit?usp=sharing"
 
 # Function to safely convert sharing link to a direct CSV reading link
 def get_clean_url(url):
@@ -158,4 +158,3 @@ if show_dashboard:
         st.info("📭 No permanent rows detected inside your cloud document yet, or sheet URL permissions are loading.")
         st.write(f"🔗 [Click here to open and verify your Master Google Sheet Database directly]({GOOGLE_SHEET_URL})")
     else:
-        st.success(f"📈 Total Active Secured Bookings Found: {len(permanent_records)}")
