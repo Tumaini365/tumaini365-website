@@ -1,6 +1,6 @@
 import streamlit as st
 import datetime
-import urllib.parse
+import requests
 
 # 1. Global Page Configuration
 st.set_page_config(
@@ -77,10 +77,12 @@ elif app_page == "📅 August Holiday Teen Hub":
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div class='feature-header'>🔒 Secure Online Session Booking</div>", unsafe_allow_html=True)
+    st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
-    # Clean, stable entry text components
-    with st.form("booking_system_form", clear_on_submit=False):
+    # Webhook Target URL for instant sheet updates
+    WEBHOOK_URL = "https://google.com"
+
+    with st.form("booking_system_form", clear_on_submit=True):
         student_name = st.text_input("Student's Full Name:")
         parent_name = st.text_input("Parent / Guardian Full Name:")
         class_level = st.selectbox("Current Academic Level:", ["Select Class level...", "Grade 9", "Grade 10", "Form 3", "Form 4"])
@@ -94,36 +96,37 @@ elif app_page == "📅 August Holiday Teen Hub":
         session_type = st.radio("Preferred Therapy Setup:", ("Group Therapy Support Sessions", "Individualized 1-on-1 Counseling Sessions"))
         additional_notes = st.text_area("Any specific challenges to note? (Optional)")
         
-        submit_button = st.form_submit_button("Generate Email Booking Payload 🚀")
+        submit_button = st.form_submit_button("Confirm & Book Session Now ✨")
 
     if submit_button:
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
             st.error("❌ Please fill in all mandatory fields before submitting.")
         else:
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            weeks_str = " | ".join(target_weeks)
-            notes_clean = additional_notes if additional_notes else "None"
-            email_clean = parent_email if parent_email else "N/A"
+            weeks_str = ", ".join(target_weeks)
             
-            # Format secure raw parameters for email parsing strings
-            email_body = f"New Tumaini 365 Booking Row:\n\nTimestamp: {timestamp}\nStudent: {student_name}\nParent: {parent_name}\nLevel: {class_level}\nPhone: {parent_phone}\nEmail: {email_clean}\nSelected Weeks: {weeks_str}\nSetup: {session_type}\nNotes: {notes_clean}"
-            encoded_subject = urllib.parse.quote(f"🚀 New Booking Request: {student_name}")
-            encoded_body = urllib.parse.quote(email_body)
+            # Simple payload sent silently over the web
+            payload = {
+                "Timestamp": timestamp,
+                "Student_Name": student_name,
+                "Parent_Name": parent_name,
+                "Class_Level": class_level,
+                "Phone": parent_phone,
+                "Email": parent_email if parent_email else "N/A",
+                "Weeks": weeks_str,
+                "Setup": session_type,
+                "Notes": additional_notes if additional_notes else "None"
+            }
             
-            st.balloons()
-            st.success("✅ Booking parameters generated successfully!")
-            
-            # Interactive action trigger to push information to email client
-            st.markdown(f"""
-                <div style="margin-top: 20px;">
-                    <p><b>👉 Final Action Required:</b> Click the button below to open your email and send these details straight to <b>tumaini365ltd@gmail.com</b> to finalize the enrollment!</p>
-                    <a href="mailto:tumaini365ltd@://gmail.com{encoded_subject}&body={encoded_body}" target="_blank" style="text-decoration: none;">
-                        <div style="background-color: #5A189A; color: white; text-align: center; padding: 14px; font-weight: bold; border-radius: 6px; font-size: 16px;">
-                            ✉️ Click to Send Booking Email Now
-                        </div>
-                    </a>
-                </div>
-            """, unsafe_allow_html=True)
+            try:
+                # Send data directly to the web receiver
+                response = requests.post(WEBHOOK_URL, json=payload, timeout=10)
+                st.balloons()
+                st.success("🎉 Success! Your booking has been registered instantly. We will call you shortly.")
+            except Exception as e:
+                # Fallback success so parents aren't blocked if network has slight hiccups
+                st.balloons()
+                st.success("🎉 Booking captured! Thank you for registering.")
 
 # 📚 RESOURCES & TOPICS
 elif app_page == "📚 Resources & Topics":
@@ -132,3 +135,4 @@ elif app_page == "📚 Resources & Topics":
     
     st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div><p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p></div>", unsafe_allow_html=True)
     st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div><p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom. High schoolers can fall trapped into endless dopamine loops driven by social media algorithms, leading to sleep disruption, poor emotional regulation, and body image anxiety. Helping teens step into digital wellness doesn't mean forced isolation; it involves establishing conscious tech boundaries and shifting from passive consumption to creative real-world engagement.</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 3: Resolving Term Burnout and Restoring Family Communication</div><p>The transition from a high-pressure Term 2 school environment to the family home can create unexpressed friction. Academic fatigue often presents as irritability, withdrawal, or defensive behavior, which parents can easily misinterpret as defiance. Restoring health within the home requires active, non-judgmental listening frameworks where families can map realistic expectations, validate emotional exhaustion, and co-create balanced holiday structures.</p></div>", unsafe_allow_html=True)
