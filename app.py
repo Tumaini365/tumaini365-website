@@ -15,7 +15,8 @@ st.set_page_config(
 st.markdown("""
     <style>
     .main-title { color: #5A189A; font-size: 36px; font-weight: bold; text-align: center; margin-bottom: 5px; }
-    .sub-title { color: #240046; font-size: 20px; text-align: center; font-weight: 500; margin-bottom: 25px; }
+    .sub-title { color: #240046; font-size: 20px; text-align: center; font-weight: 500; margin-bottom: 15px; }
+    .contact-banner { background-color: #F7F0FF; color: #3C096C; font-size: 15px; text-align: center; padding: 12px; border-radius: 8px; border: 1px dashed #7B2CBF; margin-bottom: 25px; font-weight: bold; }
     .target-badge { background-color: #F0E6FF; color: #5A189A; padding: 10px 18px; border-radius: 20px; font-weight: bold; text-align: center; margin: 15px auto; display: block; width: fit-content; border: 1px solid #D8BBFF; }
     .week-card { background-color: #FAF7FF; border-left: 5px solid #7B2CBF; padding: 18px; border-radius: 8px; margin-bottom: 15px; }
     .week-title { color: #3C096C; font-weight: bold; font-size: 18px; margin-bottom: 8px; }
@@ -26,17 +27,20 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. Sidebar Navigation Structure
+# 3. Sidebar Navigation Structure (Contact Tab Completely Removed)
 st.sidebar.markdown("## 🌐 Portal Navigation")
 app_page = st.sidebar.radio(
     "Go To:",
-    ["🏠 Home Page", "📅 August Holiday Teen Hub", "📚 Resources & Topics", "📞 Contact & Support"]
+    ["🏠 Home Page", "📅 August Holiday Teen Hub", "📚 Resources & Topics"]
 )
 
-# 🏠 HOME PAGE
+# 🏠 HOME PAGE (Contacts Placed Securely At The Top)
 if app_page == "🏠 Home Page":
     st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_allow_html=True)
+    
+    # Prominent Corporate Support Banner
+    st.markdown("<div class='contact-banner'>📞 Phone: 0720545788 / 0754828766 &nbsp;|&nbsp; 📧 Email: tumaini365ltd@gmail.com</div>", unsafe_allow_html=True)
     
     st.write("Welcome to Tumaini 365. We offer professional psychological, mental wellness, and training consultancy ecosystems designed to help individuals, families, and high school learners connect with their true potential and find lasting transformation.")
     
@@ -106,7 +110,6 @@ elif app_page == "📅 August Holiday Teen Hub":
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             weeks_str = ", ".join(target_weeks)
             
-            # Formulate full entry parameters
             payload = {
                 "Timestamp": timestamp,
                 "Student_Name": student_name,
@@ -120,7 +123,6 @@ elif app_page == "📅 August Holiday Teen Hub":
             }
             
             try:
-                # Retain structural variables across security routing protocols
                 headers = {'Content-Type': 'application/json'}
                 response = requests.post(
                     WEBHOOK_URL, 
