@@ -79,7 +79,7 @@ elif app_page == "📅 August Holiday Teen Hub":
 
     st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
-    # Webhook Target URL for instant sheet updates
+    # Webhook Target URL linked directly to your Google Sheet deployment
     WEBHOOK_URL = "https://google.com"
 
     with st.form("booking_system_form", clear_on_submit=True):
@@ -135,4 +135,3 @@ elif app_page == "📚 Resources & Topics":
     
     st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div><p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p></div>", unsafe_allow_html=True)
     st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div><p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom. High schoolers can fall trapped into endless dopamine loops driven by social media algorithms, leading to sleep disruption, poor emotional regulation, and body image anxiety. Helping teens step into digital wellness doesn't mean forced isolation; it involves establishing conscious tech boundaries and shifting from passive consumption to creative real-world engagement.</p></div>", unsafe_allow_html=True)
-    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 3: Resolving Term Burnout and Restoring Family Communication</div><p>The transition from a high-pressure Term 2 school environment to the family home can create unexpressed friction. Academic fatigue often presents as irritability, withdrawal, or defensive behavior, which parents can easily misinterpret as defiance. Restoring health within the home requires active, non-judgmental listening frameworks where families can map realistic expectations, validate emotional exhaustion, and co-create balanced holiday structures.</p></div>", unsafe_allow_html=True)
