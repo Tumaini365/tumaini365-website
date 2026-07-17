@@ -184,7 +184,7 @@ elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
             st.error("Please fill in all mandatory fields to process your booking.")
         else:
-            # Construct booking dictionary object
+            # Construct booking dictionary object safely with all fields complete
             new_entry = {
                 "Student": student_name,
                 "Parent": parent_name,
@@ -206,15 +206,10 @@ elif app_page == "📚 Resources & Topics" and not show_dashboard:
     st.markdown("<h1 class='main-title'>THERAPEUTIC RESOURCES & INSIGHTS</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Clinical Perspectives on Adolescent Dynamics During School Breaks</div>", unsafe_allow_html=True)
     
-    # Article 1
     st.markdown("""
     <div class='article-box'>
         <div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div>
         <p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p>
     </div>
-    """, unsafe_allow_html=True)
-    
-    # Article 2
-    st.markdown("""
     <div class='article-box'>
         <div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div>
