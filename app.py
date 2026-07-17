@@ -27,19 +27,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. Sidebar Navigation Structure (Contact Tab Completely Removed)
+# 3. Sidebar Navigation Structure
 st.sidebar.markdown("## 🌐 Portal Navigation")
 app_page = st.sidebar.radio(
     "Go To:",
     ["🏠 Home Page", "📅 August Holiday Teen Hub", "📚 Resources & Topics"]
 )
 
-# 🏠 HOME PAGE (Contacts Placed Securely At The Top)
+# 🏠 HOME PAGE
 if app_page == "🏠 Home Page":
     st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_allow_html=True)
     
-    # Prominent Corporate Support Banner
     st.markdown("<div class='contact-banner'>📞 Phone: 0720545788 / 0754828766 &nbsp;|&nbsp; 📧 Email: tumaini365ltd@gmail.com</div>", unsafe_allow_html=True)
     
     st.write("Welcome to Tumaini 365. We offer professional psychological, mental wellness, and training consultancy ecosystems designed to help individuals, families, and high school learners connect with their true potential and find lasting transformation.")
@@ -84,8 +83,8 @@ elif app_page == "📅 August Holiday Teen Hub":
 
     st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
-    # Webhook Target URL linked directly to your Google Sheet deployment
-    WEBHOOK_URL = "https://google.com"
+    # Webhook Target URL linked directly to your requested Google Apps Script deployment URL
+    WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyk5bUusDCbWVFWKsqk1pa12xO7jcL_dNLKIS06i7Ht0NgQHLKu4lk2gDMeiTP7wFj_/exec"
 
     with st.form("booking_system_form", clear_on_submit=True):
         student_name = st.text_input("Student's Full Name:")
@@ -107,6 +106,7 @@ elif app_page == "📅 August Holiday Teen Hub":
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
             st.error("❌ Please fill in all mandatory fields before submitting.")
         else:
+            # Original timestamp structure matching your column mapping configuration
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             weeks_str = ", ".join(target_weeks)
             
