@@ -95,11 +95,11 @@ app_page = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
+st.sidebar.sidebar_description = ""
 st.sidebar.markdown("### 🔒 Clinical Administration")
-# Secure administrative toggle to view live intake sheets privately
 show_dashboard = st.sidebar.checkbox("👁️ Open Clinical Window")
 
-# 📝 COHORT A: HOME PAGE (Corporate Color Integration)
+# 🏠 HOME PAGE
 if app_page == "🏠 Home Page" and not show_dashboard:
     st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_allow_html=True)
@@ -113,7 +113,7 @@ if app_page == "🏠 Home Page" and not show_dashboard:
 
     st.warning("🚀 **Now Enrolling**: The August Holiday Teen Mental Health Hub is active! Use the sidebar navigation menu to book a secure session for your teenager today.")
 
-# 📝 COHORT B: AUGUST TEEN HUB FORMATION WITH TIMELINE LOGIC
+# 📅 AUGUST TEEN HUB
 elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
     st.markdown("<h1 class='main-title'>AUGUST HOLIDAY MENTAL HEALTH HUB</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Your Safe Space to Unwind, Recharge, & Connect</div>", unsafe_allow_html=True)
@@ -184,7 +184,6 @@ elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
             st.error("Please fill in all mandatory fields to process your booking.")
         else:
-            # Construct booking dictionary object safely with all fields complete
             new_entry = {
                 "Student": student_name,
                 "Parent": parent_name,
@@ -195,13 +194,11 @@ elif app_page == "📅 August Holiday Teen Hub" and not show_dashboard:
                 "Type": session_type,
                 "Notes": additional_notes if additional_notes else "None"
             }
-            # Append programmatically straight to the active clinical log database
             st.session_state.clinical_bookings_db.append(new_entry)
-            
             st.balloon()
             st.success(f"Thank you, {parent_name}! The holiday reservation request for {student_name} has been securely received.")
 
-# 📝 COHORT C: RESOURCES & TOPICS (Full Counseling Articles Built In)
+# 📚 RESOURCES & TOPICS
 elif app_page == "📚 Resources & Topics" and not show_dashboard:
     st.markdown("<h1 class='main-title'>THERAPEUTIC RESOURCES & INSIGHTS</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Clinical Perspectives on Adolescent Dynamics During School Breaks</div>", unsafe_allow_html=True)
@@ -213,3 +210,6 @@ elif app_page == "📚 Resources & Topics" and not show_dashboard:
     </div>
     <div class='article-box'>
         <div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div>
+        <p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom. High schoolers can fall trapped into endless dopamine loops driven by social media algorithms, leading to sleep disruption, poor emotional regulation, and body image anxiety. Helping teens step into digital wellness doesn't mean forced isolation; it involves establishing conscious tech boundaries and shifting from passive consumption to creative real-world engagement.</p>
+    </div>
+    <div class='article-box'>
