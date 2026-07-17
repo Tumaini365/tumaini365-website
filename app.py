@@ -79,8 +79,9 @@ elif app_page == "📅 August Holiday Teen Hub":
 
     st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
-    # Webhook Target URL linked directly to your Google Sheet deployment
-    WEBHOOK_URL = "https://google.com"
+        # Webhook Target URL linked directly to your Google Sheet deployment
+    WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbygF7VhStNpnQVHsjTgJp9W1QujHYEX_xdpMJpmmCFDAuzKO7LZAsk4qXbKK-88-4Jw/exec"
+
 
     with st.form("booking_system_form", clear_on_submit=True):
         student_name = st.text_input("Student's Full Name:")
