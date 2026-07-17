@@ -66,10 +66,9 @@ st.markdown("""
         margin-top: 20px;
     }
     </style>
-""", unsafe_style_html=True)
+""", unsafe_allow_html=True)
 
 # 3. Sidebar Navigation Menu Controls
-st.sidebar.image("https://placeholder.com", caption="TUMAINI 365") # Replace with your direct logo image URL if available
 st.sidebar.markdown("## 🌐 Portal Navigation")
 app_page = st.sidebar.radio(
     "Go To:",
@@ -78,12 +77,12 @@ app_page = st.sidebar.radio(
 
 # 📝 COHORT A: HOME PAGE FRAMEWORK
 if app_page == "🏠 Home Page":
-    st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_style_html=True)
-    st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_style_html=True)
+    st.markdown("<h1 class='main-title'>TUMAINI 365</h1>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Your Hope Everyday — Professional Therapy & Consultancy</div>", unsafe_allow_html=True)
     
     st.write("Welcome to Tumaini 365. We offer professional psychological, mental wellness, and training consultancy ecosystems designed to help individuals, families, and high school learners connect with their true potential and find lasting transformation.")
     
-    st.markdown("<div class='feature-header'>🎯 Our Core Focus Areas</div>", unsafe_style_html=True)
+    st.markdown("<div class='feature-header'>🎯 Our Core Focus Areas</div>", unsafe_allow_html=True)
     st.write("• **Adolescent & Youth Counseling**: Navigating identity, social pressure, and emotional growth.")
     st.write("• **Family & Couples Therapy**: Restoring communication pathways and structural dynamics.")
     st.write("• **Institutional Training Modules**: Delivering targeted wellness frameworks for schools and communities.")
@@ -92,9 +91,9 @@ if app_page == "🏠 Home Page":
 
 # 📝 COHORT B: NEW AUGUST TEEN HUB FORMATION WITH TIMELINE LOGIC
 elif app_page == "📅 August Holiday Teen Hub":
-    st.markdown("<h1 class='main-title'>AUGUST HOLIDAY MENTAL HEALTH HUB</h1>", unsafe_style_html=True)
-    st.markdown("<div class='sub-title'>Your Safe Space to Unwind, Recharge, & Connect</div>", unsafe_style_html=True)
-    st.markdown("<div class='target-badge'>📍 HIGH SCHOOL SEGMENT: FORM 3, FORM 4 & GRADE 9, GRADE 10</div>", unsafe_style_html=True)
+    st.markdown("<h1 class='main-title'>AUGUST HOLIDAY MENTAL HEALTH HUB</h1>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>Your Safe Space to Unwind, Recharge, & Connect</div>", unsafe_allow_html=True)
+    st.markdown("<div class='target-badge'>📍 HIGH SCHOOL SEGMENT: FORM 3, FORM 4 & GRADE 9, GRADE 10</div>", unsafe_allow_html=True)
 
     # Program Logistics Indicators
     col1, col2 = st.columns(2)
@@ -106,7 +105,7 @@ elif app_page == "📅 August Holiday Teen Hub":
     st.markdown("⚠️ *Strictly limited slots to preserve clinical confidentiality, emotional safety, and group impact.*")
 
     # The 4 Focus Topics
-    st.markdown("<div class='feature-header'>📅 August Weekly Theme Breakdown</div>", unsafe_style_html=True)
+    st.markdown("<div class='feature-header'>📅 August Weekly Theme Breakdown</div>", unsafe_allow_html=True)
     st.markdown("""
     <div class='week-card'>
         <div class='week-title'>🗓️ WEEK 1 (Aug 3 – Aug 9): Dealing with Social Pressures & Peer Challenges</div>
@@ -124,10 +123,10 @@ elif app_page == "📅 August Holiday Teen Hub":
         <div class='week-title'>🗓️ WEEK 4 (Aug 24 – Aug 29): Planning for the Future: Post-Holiday Motivation & Goals</div>
         Practical mastery of toxic peer defense, conflict resolution, emotional self-regulation, and life goals planning.
     </div>
-    """, unsafe_style_html=True)
+    """, unsafe_allow_html=True)
 
     # Dynamic Selection & Intake Form
-    st.markdown("<div class='feature-header'>🔒 Dynamic Session Booking Form</div>", unsafe_style_html=True)
+    st.markdown("<div class='feature-header'>🔒 Dynamic Session Booking Form</div>", unsafe_allow_html=True)
 
     with st.form("booking_form", clear_on_submit=True):
         student_name = st.text_input("Student's Full Name:")
@@ -181,18 +180,18 @@ elif app_page == "📅 August Holiday Teen Hub":
 
 # 📝 COHORT C: TOPICS & THERAPEUTIC RESOURCES
 elif app_page == "📚 Resources & Topics":
-    st.markdown("<div class='feature-header'>📚 Mental Wellness Resources</div>", unsafe_style_html=True)
+    st.markdown("<div class='feature-header'>📚 Mental Wellness Resources</div>", unsafe_allow_html=True)
     st.write("Explore general mental fitness articles, reading lists, and mental health tools curated specifically for families, young adults, and corporate systems in Kenya.")
     st.info("💡 *Full articles library and interactive mental wellness downloads coming soon!*")
 
 # 📝 COHORT D: GENERAL OFFICE INFRASTRUCTURE CONTACT
 elif app_page == "📞 Contact & Support":
-    st.markdown("<div class='feature-header'>📞 Reach Out to Us Directly</div>", unsafe_style_html=True)
+    st.markdown("<div class='feature-header'>📞 Reach Out to Us Directly</div>", unsafe_allow_html=True)
     st.write("Need general counseling, corporate consulting, or family workshops?")
     st.write("📱 **Phone Support:** 0720545788 / 0754828766")
     st.write("📧 **Email Address:** support@tumaini365.org")
 
 # 4. Global Structural Footer Elements
 st.write("---")
-st.markdown("<div class='footer-text'>🛡️ <b>TUMAINI 365</b> — Your Hope Everyday.</div>", unsafe_style_html=True)
-st.markdown("<div class='footer-text'>Professional Psychological, Mental Wellness & Training Consultancy Services.</div>", unsafe_style_html=True)
+st.markdown("<div class='footer-text'>🛡️ <b>TUMAINI 365</b> — Your Hope Everyday.</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer-text'>Professional Psychological, Mental Wellness & Training Consultancy Services.</div>", unsafe_allow_html=True)
