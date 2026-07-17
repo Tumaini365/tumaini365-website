@@ -65,26 +65,32 @@ elif app_page == "📅 August Holiday Teen Hub":
     st.markdown("""
     <div class='week-card'>
         <div class='week-title'>🗓️ WEEK 1 (Aug 3 – Aug 9): Dealing with Social Pressures & Peer Challenges</div>
-        Real, unscripted focus on navigating peer pressure, anxiety, identity transitions, and building an internal anchor of self-esteem.
+        • Dealing with Social Pressures and Peer Challenges<br>
+        • Connecting with Community and Peers
     </div>
     <div class='week-card'>
         <div class='week-title'>🗓️ WEEK 2 (Aug 10 – Aug 16): Self-Esteem & Body Image in a Digital Age</div>
-        Hacking toxic algorithmic scrolling loops. Replacing escape habits with routine-building and healthy tech-life boundaries.
+        • Self-Esteem & Body Image<br>
+        • Building Self-Worth and Confidence<br>
+        • Understanding and Navigating Digital Influence
     </div>
     <div class='week-card'>
         <div class='week-title'>🗓️ WEEK 3 (Aug 17 – Aug 23): Managing Family Expectations & Holiday Stresses</div>
-        Decompressing from heavy Term 2 academic strain, cognitive recovery, and building strategic mental stamina for the upcoming term.
+        • Managing Family Expectations<br>
+        • Supporting Family Dynamics<br>
+        • Coping with Holiday and Family Stresses
     </div>
     <div class='week-card'>
         <div class='week-title'>🗓️ WEEK 4 (Aug 24 – Aug 29): Planning for the Future: Post-Holiday Motivation & Goals</div>
-        Practical mastery of toxic peer defense, conflict resolution, emotional self-regulation, and life goals planning.
+        • Goal Setting and Motivation<br>
+        • Skills for Sustained Motivation<br>
+        • Effective Post-Holiday Planning
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("<div class='feature-header'>🔒 Instant 1-Click Session Booking</div>", unsafe_allow_html=True)
 
-    # Webhook Target URL linked directly to your requested Google Apps Script deployment URL
-    WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyk5bUusDCbWVFWKsqk1pa12xO7jcL_dNLKIS06i7Ht0NgQHLKu4lk2gDMeiTP7wFj_/exec"
+    WEBHOOK_URL = "https://google.com"
 
     with st.form("booking_system_form", clear_on_submit=True):
         student_name = st.text_input("Student's Full Name:")
@@ -106,7 +112,6 @@ elif app_page == "📅 August Holiday Teen Hub":
         if not student_name or not parent_name or not parent_phone or class_level == "Select Class level..." or not target_weeks:
             st.error("❌ Please fill in all mandatory fields before submitting.")
         else:
-            # Original timestamp structure matching your column mapping configuration
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             weeks_str = ", ".join(target_weeks)
             
@@ -137,10 +142,10 @@ elif app_page == "📅 August Holiday Teen Hub":
                 st.balloons()
                 st.success("🎉 Booking captured! Thank you for registering.")
 
-# 📚 RESOURCES & TOPICS
+# 📚 RESOURCES & TOPICS (Expanded to 4 articles matching the flyer)
 elif app_page == "📚 Resources & Topics":
     st.markdown("<h1 class='main-title'>THERAPEUTIC RESOURCES & INSIGHTS</h1>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Clinical Perspectives on Adolescent Dynamics During School Breaks</div>", unsafe_allow_html=True)
     
-    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 1: Navigating Peer Pressures and Adolescent Identity</div><p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p></div>", unsafe_allow_html=True)
-    st.markdown("<div class='article-box'><div class='article-title'>📖 Topic 2: Deconstructing Digital Loops and Screen Dependency</div><p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom. High schoolers can fall trapped into endless dopamine loops driven by social media algorithms, leading to sleep disruption, poor emotional regulation, and body image anxiety. Helping teens step into digital wellness doesn't mean forced isolation; it involves establishing conscious tech boundaries and shifting from passive consumption to creative real-world engagement.</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='article-box'><div class='article-title'>📖 Week 1: Dealing with Social Pressures & Peer Challenges</div><p>During extended school breaks, teenagers experience a sudden break from structured academic validation, turning heavily toward peer networks to build their identity. This void can expose them to acute vulnerability regarding social comparison, boundary blurring, and toxic conformity. True emotional health begins when the adolescent learns to value internal configuration over external approval, building firm defense mechanisms against negative peer modeling.</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='article-box'><div class='article-title'>📖 Week 2: Self-Esteem & Body Image in a Digital Age</div><p>Unstructured vacation time frequently triggers compulsive tech use as a coping mechanism for boredom. High schoolers can fall trapped into endless dopamine loops driven by social media algorithms, leading to sleep disruption, poor emotional regulation, and body image anxiety. Helping teens step into digital wellness doesn't mean forced isolation; it involves establishing conscious tech boundaries and shifting from passive consumption to creative real-world engagement.</p></div>", unsafe_allow_html=True)
